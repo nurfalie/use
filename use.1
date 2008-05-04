@@ -1,0 +1,51 @@
+.TH use 1 "November 02, 2007"
+.SH NAME
+use
+.SH SYNOPSIS
+.B use [options]
+.SH DESCRIPTION
+.B use
+is a tool that allows a user to modify a
+shell's environment variables in accordance to defined products.
+It currently modifies LD_LIBRARY_PATH, MANPATH, PATH, XFILESEARCHPATH, and any other
+variable that is defined in the use.table file.
+.SH OPTIONS
+.IP "-a"
+Display information about use.
+.IP "-d product"
+This option detaches the given product. In other words, the environment
+variables of the current shell no longer reference the paths defined in the
+use.table file for the given product.
+.IP "-l"
+List all known products stored in use.table.
+.IP "-n variable"
+Prevent use from modifying the environment variable variable. Current supported variables
+are LD_LIBRARY_PATH, MANPATH, PATH, and XFILESEARCHPATH.
+.IP "-p"
+Pretend mode. Show the changes without executing them. This option supersedes the -q option.
+.IP "-q"
+Quiet mode. Also, all errors and warnings will be suppressed. This option does not interfere with the -p option.
+.IP "-s type"
+Set the shell type. Valid shells are: SH, CSH, KSH, BASH, TCSH.
+This option is not really necessary as the use alias, if configured properly,
+passes this value to the use.bin executable.
+.IP "-u product"
+This option uses the given product. The current shell's environment variables
+are modified to reference the paths defined in use.table for the given product.
+.SH FILES
+.B /usr/local/share/use.table
+.B /usr/local/bin/use.sh
+.B /usr/local/bin/use.csh
+.B /usr/local/bin/use.ksh
+.B /usr/local/bin/use.bash
+.B /usr/local/bin/use.tcsh
+.B /usr/local/bin/use.bin
+.SH NOTES
+Use will issue a warning for a product that is not located in the use.table file. It will also issue a warning if a product references a nonexistent path.
+You will need to create a use alias for each shell that you intend to use. See the
+ALIAS EXAMPLE(S) section for more information.
+.SH ALIAS EXAMPLE(S)
+.IP "bash:"
+alias use='source /usr/local/bin/use.bash'
+.SH AUTHOR(S)
+.B Alexis Megas

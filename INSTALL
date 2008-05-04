@@ -1,0 +1,6 @@
+1. Verify that the configure.pl script references the correct
+   path for PERL.
+2. Verify that all of the shell scripts reference the correct
+   shell paths.
+3. Run make.
+4. Run sudo make install.
