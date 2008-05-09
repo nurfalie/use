@@ -3,11 +3,11 @@
 # c. The order of the environment variables is important.
 
 qt4_3_4.description:Qt 4.3.4 (qt4_3_4)
-qt4_3_4.QTDIR:/usr/local
-qt4_3_4.QMAKESPEC:/usr/local/share/qt4/mkspecs/freebsd-g++
-qt4_3_4.PATH:/usr/local/bin
+qt4_3_4.QTDIR:/usr/local/Trolltech/Qt-4.3.4
+qt4_3_4.QMAKESPEC:/usr/local/Trolltech/Qt-4.3.4/mkspecs/macx-g++
+qt4_3_4.PATH:/usr/local/Trolltech/Qt-4.3.4/bin
 qt4_3_4.MANPATH:
-qt4_3_4.LD_LIBRARY_PATH:
+qt4_3_4.LD_LIBRARY_PATH:/usr/local/Trolltech/Qt-4.3.4/lib
 
 shuts.description:Shuts (shuts)
 shuts.PATH:/usr/local/bin

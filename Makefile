@@ -1,5 +1,3 @@
-.sinclude "./Makefile.tmp"
-
 GCC		=	gcc
 GCC_OPTIONS	=	 -Wall -pedantic-errors
 INCLUDES	=	flags.h \
@@ -15,7 +13,7 @@ standard:	Makefile.tmp $(SRC) $(INCLUDES)
 		chmod g+rx,o+rx,u+rx use.bin
 
 Makefile.tmp:
-		./configure.pl
+	./configure.pl
 
 clean:
 	rm -f use.bin use.core core
