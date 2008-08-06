@@ -2,7 +2,7 @@
 
 set BACKUP_DIR = /love/scsi/backup.d/use.d
 
-if (! -d $BACKUP_DIR ) then
+if ( ! -d $BACKUP_DIR ) then
     mkdir $BACKUP_DIR
 endif
 
