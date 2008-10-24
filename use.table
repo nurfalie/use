@@ -2,13 +2,9 @@
 # b. Information is case-sensitive.
 # c. The order of the environment variables is important.
 
-qt4_4_1.description:Qt 4.4.1 (qt4_4_1)
-qt4_4_1.QTDIR:/usr/local
-qt4_4_1.QMAKESPEC:/usr/local/share/qt4/mkspecs/freebsd-g++
-qt4_4_1.PATH:/usr/local/bin
-qt4_4_1.MANPATH:
-qt4_4_1.LD_LIBRARY_PATH:
-
-shuts.description:Shuts (shuts)
-shuts.PATH:/usr/local/bin
-shuts.MANPATH:/usr/local/man
+qt4_4_3.description:Qt 4.4.3 (qt4_4_3)
+qt4_4_3.QTDIR:/usr/local/Trolltech/Qt-4.4.3
+qt4_4_3.QMAKESPEC:/usr/local/Trolltech/Qt-4.4.3/mkspecs/linux-g++
+qt4_4_3.PATH:/usr/local/Trolltech/Qt-4.4.3/bin
+qt4_4_3.MANPATH:
+qt4_4_3.LD_LIBRARY_PATH:/usr/local/Trolltech/Qt-4.4.3/lib
