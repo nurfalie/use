@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
   else
-    (void) fprintf(stdout, filename);
+    (void) fprintf(stdout, "%s", filename);
 
   (void) setvbuf(_stdout_, (char *) NULL, _IONBF, 0);
 
