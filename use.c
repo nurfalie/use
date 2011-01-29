@@ -208,7 +208,7 @@ static int use(struct flags_struct *flags)
 
 	  if(!flags->quiet)
 	    (void) fprintf(_stdout_, "echo \"Error: unable to allocate "
-			   "memory for PATH.\"\n"); 
+			   "memory for PATH.\"\n");
 
 	  goto done_label;
 	}
