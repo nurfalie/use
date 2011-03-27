@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
   struct flags_struct flags;
 
   (void) memset(filename, '\0', sizeof(filename));
-  (void) snprintf(filename, sizeof(filename), "%s/.use.sourceme.%ld.%ld",
-		  TEMPDIR, (long) getuid(), (long) getpid());
+  (void) snprintf(filename, sizeof(filename), "%s/.use.sourceme.%ud.%ud",
+		  TEMPDIR, getuid(), getpid());
 
   if((_stdout_ = fopen(filename, "a+")) == NULL)
     {
