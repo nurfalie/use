@@ -1,6 +1,6 @@
 -include ./Makefile.tmp
 GCC		=	gcc
-GCC_OPTIONS	=	 -Wall -pedantic-errors
+GCC_OPTIONS	=	 -Wall -Wextra -pedantic
 INCLUDES	=	flags.h \
 			use.h \
 			use_tmp.h
