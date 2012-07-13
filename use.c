@@ -552,7 +552,8 @@ static int prepare(FILE *fp, const char *product,
 	      value[strlen(value) - 1] = '\0';
 
 #ifdef DEBUG
-	    (void) fprintf(stderr, "%s=%s\n", variable, value);
+	    if(value && variable)
+	      (void) fprintf(stderr, "%s=%s\n", variable, value);
 #endif
 
 	    if(updatevariable(variable, value, flags, action) != 0)
