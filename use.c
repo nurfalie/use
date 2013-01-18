@@ -583,7 +583,8 @@ static int updatevariable(const char *variable, const char *value,
 
   if(variable == NULL || strlen(variable) == 0 ||
      value == NULL)
-    ;
+    {
+    }
   else if(strcmp(variable, "PATH") == 0)
     rc = allocenv(&PATH, value, action, flags);
   else if(strcmp(variable, "MANPATH") == 0)
