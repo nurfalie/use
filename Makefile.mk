@@ -1,12 +1,12 @@
 -include ./Makefile.tmp
 GCC		=	gcc
-GCC_OPTIONS	=	 -Wall -Wextra -pedantic
+GCC_OPTIONS	=	-Wall -Werror -Wextra
 INCLUDES	=	flags.h \
 			use.h \
 			use_tmp.h
 INCLUDE_PATH	=	-I/usr/include -I.
 SRC		=	use.c validate.c
-LIBS		=
+LIBS		=	-lc
 
 standard:	Makefile.tmp $(SRC) $(INCLUDES)
 		$(GCC) $(GCC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) \

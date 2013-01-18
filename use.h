@@ -59,11 +59,4 @@ enum
 int validate(const int, char *[], struct flags_struct *);
 int validatePath(const char *, const struct flags_struct *);
 
-/*
-** -- System Functions --
-*/
-
-extern int getopt(int, char * const [], const char *);
-extern int snprintf(char *, size_t, const char *, ...);
-
 #endif
