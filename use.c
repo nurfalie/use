@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2006, 2007 Alexis Megas
+** Copyright (c) 2006, 2007, 2013 Alexis Megas
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
       else
 	{
 	  while(fgets(line, (int) sizeof(line), fp) != NULL)
-	    if(strstr(line, ".description") != NULL && strstr(line, ":")
-	       != NULL && line[0] != '#')
+	    if(strstr(line, ".description") != NULL &&
+	       strstr(line, ":") != NULL && line[0] != '#')
 	      {
 		tmp = strstr(line, ":") + 1;
 
@@ -314,9 +314,8 @@ static int use(struct flags_struct *flags)
 	  found = 0;
 
 	  while(fgets(line, (int) sizeof(line), fp) != NULL)
-	    if(strstr(line, ".description") != NULL && strstr(line, ":")
-	       != NULL &&
-	       line[0] != '#')
+	    if(strstr(line, ".description") != NULL &&
+	       strstr(line, ":") != NULL && line[0] != '#')
 	      {
 		product = line;
 
@@ -377,8 +376,8 @@ static int use(struct flags_struct *flags)
 	  found = 0;
 
 	  while(fgets(line, (int) sizeof(line), fp) != NULL)
-	    if(strstr(line, ".description") != NULL && strstr(line, ":")
-	       != NULL && line[0] != '#')
+	    if(strstr(line, ".description") != NULL &&
+	       strstr(line, ":") != NULL && line[0] != '#')
 	      {
 		product = line;
 
@@ -536,8 +535,8 @@ static int prepare(FILE *fp, const char *product,
   */
 
   while(fgets(line, (int) sizeof(line), fp) != NULL)
-    if(strncmp(line, product, strlen(product)) == 0 && strstr(line, ":")
-       != NULL)
+    if(strncmp(line, product, strlen(product)) == 0 &&
+       strstr(line, ":") != NULL)
       {
 	if(strtok_r(line, ".", &lasts) != NULL)
 	  variable = strtok_r(NULL, ":", &lasts);
@@ -581,8 +580,7 @@ static int updatevariable(const char *variable, const char *value,
   int rc = 0;
   char envact[MAX_LINE_LENGTH];
 
-  if(variable == NULL || strlen(variable) == 0 ||
-     value == NULL)
+  if(variable == NULL || strlen(variable) == 0 || value == NULL)
     {
     }
   else if(strcmp(variable, "PATH") == 0)
