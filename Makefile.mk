@@ -1,6 +1,6 @@
 -include ./Makefile.tmp
 GCC		=	gcc
-GCC_OPTIONS	=	-Wall -Werror -Wextra
+GCC_OPTIONS	=	-Wall -Werror -Wextra -Wstack-protector -fPIE -fstack-protector-all -pedantic
 INCLUDES	=	flags.h \
 			use.h \
 			use_tmp.h
