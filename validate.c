@@ -16,7 +16,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	break;
       }
 
-  for(argv++; *argv != NULL; argv++)
+  for(argv++; *argv != 0; argv++)
     {
       ct += 1;
 
@@ -31,7 +31,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	{
 	  argv++;
 
-	  if(*argv == NULL)
+	  if(*argv == 0)
 	    {
 	      rc = 1;
 	      break;
@@ -75,7 +75,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	{
 	  argv++;
 
-	  if(*argv == NULL)
+	  if(*argv == 0)
 	    {
 	      rc = 1;
 	      break;
@@ -111,7 +111,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	{
 	  argv++;
 
-	  if(*argv == NULL)
+	  if(*argv == 0)
 	    {
 	      rc = 1;
 	      break;
@@ -140,7 +140,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	{
 	  argv++;
 
-	  if(*argv == NULL)
+	  if(*argv == 0)
 	    {
 	      rc = 1;
 	      break;

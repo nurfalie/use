@@ -28,7 +28,7 @@ FILE *_stdout_;
 ** -- Defines --
 */
 
-#define VERSION "1.10"
+#define VERSION "1.10.1"
 
 #ifndef EXIT_SUCCESS
 #define EXIT_SUCCESS 0

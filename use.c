@@ -31,10 +31,10 @@
 ** -- Local variables --
 */
 
-static char *PATH = NULL;
-static char *MANPATH = NULL;
-static char *LD_LIBRARY_PATH = NULL;
-static char *XFILESEARCHPATH = NULL;
+static char *PATH = 0;
+static char *MANPATH = 0;
+static char *LD_LIBRARY_PATH = 0;
+static char *XFILESEARCHPATH = 0;
 
 /*
 ** -- Local Functions --
@@ -52,17 +52,17 @@ static void reset(struct flags_struct *);
 int main(int argc, char *argv[])
 {
   int rc = 0;
-  char *tmp = NULL;
+  char *tmp = 0;
   char line[MAX_LINE_LENGTH];
   char filename[PATH_MAX];
-  FILE *fp = NULL;
+  FILE *fp = 0;
   struct flags_struct flags;
 
-  (void) memset(filename, '\0', sizeof(filename));
+  (void) memset(filename, 0, sizeof(filename));
   (void) snprintf(filename, sizeof(filename), "%s/.use.sourceme.%ud.%ud",
 		  TEMPDIR, getuid(), getpid());
 
-  if((_stdout_ = fopen(filename, "a+")) == NULL)
+  if((_stdout_ = fopen(filename, "a+")) == 0)
     {
       (void) fprintf(stdout, "/dev/null");
       return EXIT_FAILURE;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   else
     (void) fprintf(stdout, "%s", filename);
 
-  (void) setvbuf(_stdout_, (char *) NULL, _IONBF, 0);
+  (void) setvbuf(_stdout_, (char *) 0, _IONBF, 0);
 
   /*
   ** Reset the structure.
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 
   if(flags.list)
     {
-      if((fp = fopen(USETABLE, "r")) == NULL)
+      if((fp = fopen(USETABLE, "r")) == 0)
 	{
 	  rc = 1;
 	  (void) fprintf(_stdout_, "echo \"Error: unable to open %s.\"",
@@ -102,14 +102,14 @@ int main(int argc, char *argv[])
 	}
       else
 	{
-	  while(fgets(line, (int) sizeof(line), fp) != NULL)
-	    if(strstr(line, ".description") != NULL &&
-	       strstr(line, ":") != NULL && line[0] != '#')
+	  while(fgets(line, (int) sizeof(line), fp) != 0)
+	    if(strstr(line, ".description") != 0 &&
+	       strstr(line, ":") != 0 && line[0] != '#')
 	      {
 		tmp = strstr(line, ":") + 1;
 
 		if(tmp[strlen(tmp) - 1] == '\n')
-		  tmp[strlen(tmp) - 1] = '\0';
+		  tmp[strlen(tmp) - 1] = 0;
 
 		(void) fprintf(_stdout_, "echo \"%s\"\n", tmp);
 	      }
@@ -164,8 +164,8 @@ static void reset(struct flags_struct *flags)
 
   for(i = 0; i < MAX_PRODUCTS; i++)
     {
-      (void) memset(flags->used[i], '\0', sizeof(flags->used[0]));
-      (void) memset(flags->detached[i], '\0', sizeof(flags->detached[0]));
+      (void) memset(flags->used[i], 0, sizeof(flags->used[0]));
+      (void) memset(flags->detached[i], 0, sizeof(flags->detached[0]));
     }
 }
 
@@ -175,32 +175,32 @@ static int use(struct flags_struct *flags)
   int rc = 0;
   int found = 0;
   int dousevalues[4]; /* This should be the same size as stdvariables. */
-  char *tmp = NULL;
+  char *tmp = 0;
   char line[MAX_LINE_LENGTH];
   char envact[MAX_LINE_LENGTH];
-  char *product = NULL;
+  char *product = 0;
   char *stdvalues[4]; /* This should be the same size as stdvariables. */
   char *stdvariables[] = {"PATH",
 			  "MANPATH",
 			  "LD_LIBRARY_PATH",
 			  "XFILESEARCHPATH"};
   size_t size = 0;
-  FILE *fp = NULL;
+  FILE *fp = 0;
 
   if(flags->no_path == 0)
     {
-      if((tmp = getenv("PATH")) != NULL)
+      if((tmp = getenv("PATH")) != 0)
 	size = strlen(tmp) + 1;
       else
 	size = 1;
 
       PATH = (char *) malloc(size);
-      (void) memset(PATH, '\0', size);
+      (void) memset(PATH, 0, size);
 
-      if(PATH != NULL)
+      if(PATH != 0)
 	{
-	  if(tmp != NULL)
-	    (void) strcpy(PATH, tmp);
+	  if(tmp != 0)
+	    (void) strncpy(PATH, tmp, size);
 	}
       else
 	{
@@ -218,18 +218,18 @@ static int use(struct flags_struct *flags)
 
   if(flags->no_manpath == 0)
     {
-      if((tmp = getenv("MANPATH")) != NULL)
+      if((tmp = getenv("MANPATH")) != 0)
 	size = strlen(tmp) + 1;
       else
 	size = 1;
 
       MANPATH = (char *) malloc(size);
-      (void) memset(MANPATH, '\0', size);
+      (void) memset(MANPATH, 0, size);
 
-      if(MANPATH != NULL)
+      if(MANPATH != 0)
 	{
-	  if(tmp != NULL)
-	    (void) strcpy(MANPATH, tmp);
+	  if(tmp != 0)
+	    (void) strncpy(MANPATH, tmp, size);
 	}
       else if(size > 0)
 	{
@@ -247,18 +247,18 @@ static int use(struct flags_struct *flags)
 
   if(flags->no_ld_library_path == 0)
     {
-      if((tmp = getenv("LD_LIBRARY_PATH")) != NULL)
+      if((tmp = getenv("LD_LIBRARY_PATH")) != 0)
 	size = strlen(tmp) + 1;
       else
 	size = 1;
 
       LD_LIBRARY_PATH = (char *) malloc(size);
-      (void) memset(LD_LIBRARY_PATH, '\0', size);
+      (void) memset(LD_LIBRARY_PATH, 0, size);
 
-      if(LD_LIBRARY_PATH != NULL)
+      if(LD_LIBRARY_PATH != 0)
 	{
-	  if(tmp != NULL)
-	    (void) strcpy(LD_LIBRARY_PATH, tmp);
+	  if(tmp != 0)
+	    (void) strncpy(LD_LIBRARY_PATH, tmp, size);
 	}
       else if(size > 0)
 	{
@@ -278,18 +278,18 @@ static int use(struct flags_struct *flags)
 
   if(flags->no_xfilesearchpath == 0)
     {
-      if((tmp = getenv("XFILESEARCHPATH")) != NULL)
+      if((tmp = getenv("XFILESEARCHPATH")) != 0)
 	size = strlen(tmp) + 1;
       else
 	size = 1;
 
       XFILESEARCHPATH = (char *) malloc(size);
-      (void) memset(XFILESEARCHPATH, '\0', size);
+      (void) memset(XFILESEARCHPATH, 0, size);
 
-      if(XFILESEARCHPATH != NULL)
+      if(XFILESEARCHPATH != 0)
 	{
-	  if(tmp != NULL)
-	  (void) strcpy(XFILESEARCHPATH, tmp);
+	  if(tmp != 0)
+	    (void) strncpy(XFILESEARCHPATH, tmp, size);
 	}
       else if(size > 0)
 	{
@@ -307,22 +307,22 @@ static int use(struct flags_struct *flags)
     (void) fprintf(_stdout_, "echo \"Warning: XFILESEARCHPATH not "
 		   "updated.\"\n");
 
-  if((fp = fopen(USETABLE, "r")) != NULL)
+  if((fp = fopen(USETABLE, "r")) != 0)
     {
       for(i = flags->items_detached - 1; i >= 0; i--)
 	{
 	  found = 0;
 
-	  while(fgets(line, (int) sizeof(line), fp) != NULL)
-	    if(strstr(line, ".description") != NULL &&
-	       strstr(line, ":") != NULL && line[0] != '#')
+	  while(fgets(line, (int) sizeof(line), fp) != 0)
+	    if(strstr(line, ".description") != 0 &&
+	       strstr(line, ":") != 0 && line[0] != '#')
 	      {
 		product = line;
 
-		if(strstr(product, ".") != NULL)
+		if(strstr(product, ".") != 0)
 		  {
 		    product[strlen(product) -
-			    strlen(strstr(product, "."))] = '\0';
+			    strlen(strstr(product, "."))] = 0;
 
 		    if(strcmp(flags->detached[i], product) == 0)
 		      {
@@ -375,16 +375,16 @@ static int use(struct flags_struct *flags)
 	{
 	  found = 0;
 
-	  while(fgets(line, (int) sizeof(line), fp) != NULL)
-	    if(strstr(line, ".description") != NULL &&
-	       strstr(line, ":") != NULL && line[0] != '#')
+	  while(fgets(line, (int) sizeof(line), fp) != 0)
+	    if(strstr(line, ".description") != 0 &&
+	       strstr(line, ":") != 0 && line[0] != '#')
 	      {
 		product = line;
 
-		if(strstr(product, ".") != NULL)
+		if(strstr(product, ".") != 0)
 		  {
 		    product[strlen(product) -
-			    strlen(strstr(product, "."))] = '\0';
+			    strlen(strstr(product, "."))] = 0;
 
 		    if(strcmp(flags->used[i], product) == 0)
 		      {
@@ -443,7 +443,7 @@ static int use(struct flags_struct *flags)
 
  done_label:
 
-  if(fp != NULL)
+  if(fp != 0)
     (void) fclose(fp);
 
   if(rc == 0)
@@ -462,7 +462,7 @@ static int use(struct flags_struct *flags)
       dousevalues[3] = flags->no_xfilesearchpath;
 
       for(i = 0; i < 4; i++)
-	if(stdvalues[i] != NULL &&
+	if(stdvalues[i] != 0 &&
 	   strlen(stdvalues[i]) > 0) /* In case the -n option was used. */
 	  {
 	    if(flags->shell_type == SH)
@@ -526,29 +526,29 @@ static int prepare(FILE *fp, const char *product,
   int rc = 0;
   char line[MAX_LINE_LENGTH];
   char *lasts;
-  char *value = NULL;
-  char *variable = NULL;
+  char *value = 0;
+  char *variable = 0;
 
   /*
   ** The order of the products listed is significant. Products at the
   ** front of the list have a higher priority than products at the end.
   */
 
-  while(fgets(line, (int) sizeof(line), fp) != NULL)
+  while(fgets(line, (int) sizeof(line), fp) != 0)
     if(strncmp(line, product, strlen(product)) == 0 &&
-       strstr(line, ":") != NULL)
+       strstr(line, ":") != 0)
       {
-	if(strtok_r(line, ".", &lasts) != NULL)
-	  variable = strtok_r(NULL, ":", &lasts);
+	if(strtok_r(line, ".", &lasts) != 0)
+	  variable = strtok_r(0, ":", &lasts);
 
-	if((value = strtok_r(NULL, ":", &lasts)) == NULL)
+	if((value = strtok_r(0, ":", &lasts)) == 0)
 	  value = (char *) "";
 
 	do
 	  {
-	    if(value != NULL && strlen(value) > 0 &&
+	    if(value != 0 && strlen(value) > 0 &&
 	       value[strlen(value) - 1] == '\n')
-	      value[strlen(value) - 1] = '\0';
+	      value[strlen(value) - 1] = 0;
 
 #ifdef DEBUG
 	    if(value && variable)
@@ -561,9 +561,9 @@ static int prepare(FILE *fp, const char *product,
 		break;
 	      }
 
-	    value = strtok_r(NULL, ":", &lasts);
+	    value = strtok_r(0, ":", &lasts);
 	  }
-	while(rc == 0 && value != NULL);
+	while(rc == 0 && value != 0);
 
 	if(rc != 0)
 	  break;
@@ -580,7 +580,7 @@ static int updatevariable(const char *variable, const char *value,
   int rc = 0;
   char envact[MAX_LINE_LENGTH];
 
-  if(variable == NULL || strlen(variable) == 0 || value == NULL)
+  if(variable == 0 || strlen(variable) == 0 || value == 0)
     {
     }
   else if(strcmp(variable, "PATH") == 0)
@@ -656,24 +656,24 @@ static int allocenv(char **envvar, const char *value, const int action,
 {
   int rc = 0;
   int found = 0;
-  char *tmp = NULL;
-  char *token = NULL;
+  char *tmp = 0;
+  char *token = 0;
   size_t size = 0;
 
-  if(*envvar == NULL)
+  if(*envvar == 0)
     goto done_label;
   else if(action == ADD_PATH && strlen(value) > 0)
     size = strlen(*envvar) + strlen(value) + strlen(":") + 1;
   else
     size = strlen(*envvar) + 1;
 
-  if((tmp = malloc(size)) == NULL)
+  if((tmp = malloc(size)) == 0)
     {
       rc = 1;
       goto done_label;
     }
 
-  (void) memset(tmp, '\0', size);
+  (void) memset(tmp, 0, size);
 
   if(action == ADD_PATH && strlen(value) > 0)
     {
@@ -691,22 +691,22 @@ static int allocenv(char **envvar, const char *value, const int action,
 
   token = strtok(*envvar, ":");
 
-  while(token != NULL)
+  while(token != 0)
     {
       if((found = strcmp(token, value)) != 0)
 	(void) strcat(tmp, token);
 
-      if((token = strtok(NULL, ":")) != NULL && found != 0)
+      if((token = strtok(0, ":")) != 0 && found != 0)
 	(void) strcat(tmp, ":");
     }
 
   if(tmp[strlen(tmp) - 1] == ':')
-    tmp[strlen(tmp) - 1] = '\0';
+    tmp[strlen(tmp) - 1] = 0;
 
   free(*envvar);
   size = strlen(tmp) + 1;
 
-  if((*envvar = malloc(size)) == NULL)
+  if((*envvar = malloc(size)) == 0)
     {
       rc = 1;
       goto done_label;
