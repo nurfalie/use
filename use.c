@@ -25,6 +25,8 @@
 ** THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <math.h>
+
 #include "use.h"
 
 /*
@@ -192,10 +194,16 @@ static int use(struct flags_struct *flags)
       if((tmp = getenv("PATH")) != 0)
 	size = strlen(tmp) + 1;
       else
-	size = 1;
+	size = 0;
 
-      PATH = (char *) malloc(size);
-      (void) memset(PATH, 0, size);
+      free(PATH);
+      PATH = 0;
+
+      if(size > 0)
+	{
+	  PATH = (char *) malloc(size);
+	  (void) memset(PATH, 0, size);
+	}
 
       if(PATH != 0)
 	{
@@ -221,10 +229,16 @@ static int use(struct flags_struct *flags)
       if((tmp = getenv("MANPATH")) != 0)
 	size = strlen(tmp) + 1;
       else
-	size = 1;
+	size = 0;
 
-      MANPATH = (char *) malloc(size);
-      (void) memset(MANPATH, 0, size);
+      free(MANPATH);
+      MANPATH = 0;
+
+      if(size > 0)
+	{
+	  MANPATH = (char *) malloc(size);
+	  (void) memset(MANPATH, 0, size);
+	}
 
       if(MANPATH != 0)
 	{
@@ -250,10 +264,16 @@ static int use(struct flags_struct *flags)
       if((tmp = getenv("LD_LIBRARY_PATH")) != 0)
 	size = strlen(tmp) + 1;
       else
-	size = 1;
+	size = 0;
 
-      LD_LIBRARY_PATH = (char *) malloc(size);
-      (void) memset(LD_LIBRARY_PATH, 0, size);
+      free(LD_LIBRARY_PATH);
+      LD_LIBRARY_PATH = 0;
+
+      if(size > 0)
+	{
+	  LD_LIBRARY_PATH = (char *) malloc(size);
+	  (void) memset(LD_LIBRARY_PATH, 0, size);
+	}
 
       if(LD_LIBRARY_PATH != 0)
 	{
@@ -281,10 +301,16 @@ static int use(struct flags_struct *flags)
       if((tmp = getenv("XFILESEARCHPATH")) != 0)
 	size = strlen(tmp) + 1;
       else
-	size = 1;
+	size = 0;
 
-      XFILESEARCHPATH = (char *) malloc(size);
-      (void) memset(XFILESEARCHPATH, 0, size);
+      free(XFILESEARCHPATH);
+      XFILESEARCHPATH = 0;
+
+      if(size > 0)
+	{
+	  XFILESEARCHPATH = (char *) malloc(size);
+	  (void) memset(XFILESEARCHPATH, 0, size);
+	}
 
       if(XFILESEARCHPATH != 0)
 	{
@@ -335,8 +361,8 @@ static int use(struct flags_struct *flags)
 			    if(!flags->quiet)
 			      (void) fprintf
 				(_stdout_,
-				 "echo \"Error: unable to allocate "
-				 "memory for product %s.\"\n",
+				 "echo \"Error: unable to prepare "
+				 "containers for product %s.\"\n",
 				 product);
 
 			    goto done_label;
@@ -397,8 +423,8 @@ static int use(struct flags_struct *flags)
 			    if(!flags->quiet)
 			      (void) fprintf
 				(_stdout_,
-				 "echo \"Error: unable to allocate "
-				 "memory for product %s.\"\n",
+				 "echo \"Error: unable to prepare "
+				 "containers for product %s.\"\n",
 				 product);
 
 			    goto done_label;
@@ -534,6 +560,12 @@ static int prepare(FILE *fp, const char *product,
   ** front of the list have a higher priority than products at the end.
   */
 
+  if(flags == 0 || fp == 0 || product == 0 || strlen(product) == 0)
+    {
+      rc = 1;
+      return rc;
+    }
+
   while(fgets(line, (int) sizeof(line), fp) != 0)
     if(strncmp(line, product, strlen(product)) == 0 &&
        strstr(line, ":") != 0)
@@ -580,7 +612,7 @@ static int updatevariable(const char *variable, const char *value,
   int rc = 0;
   char envact[MAX_LINE_LENGTH];
 
-  if(variable == 0 || strlen(variable) == 0 || value == 0)
+  if(flags == 0 || value == 0 || variable == 0 || strlen(variable) == 0)
     {
     }
   else if(strcmp(variable, "PATH") == 0)
@@ -662,7 +694,7 @@ static int allocenv(char **envvar, const char *value, const int action,
 
   if(*envvar == 0)
     goto done_label;
-  else if(action == ADD_PATH && strlen(value) > 0)
+  else if(action == ADD_PATH && value && strlen(value) > 0)
     size = strlen(*envvar) + strlen(value) + strlen(":") + 1;
   else
     size = strlen(*envvar) + 1;
@@ -681,8 +713,9 @@ static int allocenv(char **envvar, const char *value, const int action,
 	(void) fprintf(_stdout_, "echo \"Warning: %s "
 		       "is not a valid path.\"\n", value);
 
-      (void) strcat(tmp, value);
-      (void) strcat(tmp, ":");
+      (void) strncat(tmp, value, fmin(size - strlen(tmp) - 1,
+				      strlen(value)));
+      (void) strncat(tmp, ":", fmin(size - strlen(tmp) - 1, 1));
 
 #ifdef DEBUG
       (void) fprintf(stderr, "PATH1 = %s\n", value);
@@ -694,10 +727,11 @@ static int allocenv(char **envvar, const char *value, const int action,
   while(token != 0)
     {
       if((found = strcmp(token, value)) != 0)
-	(void) strcat(tmp, token);
+	(void) strncat(tmp, token, fmin(size - strlen(tmp) - 1,
+					strlen(token)));
 
       if((token = strtok(0, ":")) != 0 && found != 0)
-	(void) strcat(tmp, ":");
+	(void) strncat(tmp, ":", fmin(size - strlen(tmp) - 1, 1));
     }
 
   if(tmp[strlen(tmp) - 1] == ':')

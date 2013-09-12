@@ -6,13 +6,13 @@
 */
 
 #include <errno.h>
-#include <stdio.h>
 #include <limits.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <strings.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 /*
 ** -- Local Includes --
@@ -28,7 +28,7 @@ FILE *_stdout_;
 ** -- Defines --
 */
 
-#define VERSION "1.10.1"
+#define VERSION "1.10.2"
 
 #ifndef EXIT_SUCCESS
 #define EXIT_SUCCESS 0
@@ -45,10 +45,10 @@ FILE *_stdout_;
 
 enum
   {
-    SH = 1,
+    BASH = 1,
     CSH,
     KSH,
-    BASH,
+    SH,
     TCSH
   };
 
@@ -56,7 +56,7 @@ enum
 ** -- Local Functions --
 */
 
-int validate(const int, char *[], struct flags_struct *);
-int validatePath(const char *, const struct flags_struct *);
+int validate(const int argc, char *argv[], struct flags_struct *flags);
+int validatePath(const char *path, const struct flags_struct *flags);
 
 #endif

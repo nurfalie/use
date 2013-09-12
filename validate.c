@@ -1,13 +1,21 @@
 #include "use.h"
 
-static int used_exists(const struct flags_struct *, const char *);
-static int detached_exists(const struct flags_struct *, const char *);
+static int used_exists
+(const struct flags_struct *flags, const char *value);
+static int detached_exists
+(const struct flags_struct *flags, const char *value);
 
 int validate(const int argc, char *argv[], struct flags_struct *flags)
 {
   int i = 0;
   int ct = 0;
   int rc = 0;
+
+  if(flags == 0)
+    {
+      rc = 1;
+      return rc;
+    }
 
   for(i = 0; i < argc; i++)
     if(strcmp(argv[i], "-q") == 0)
@@ -183,7 +191,8 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
   else if(flags->list > 0 && flags->about > 0) /* Both -a and -l were used. */
     rc = 1;
   else if(flags->list == 1 || flags->about == 1)
-    ;
+    {
+    }
   else if(flags->items_used == 0 && flags->items_detached == 0)
     rc = 1;
 
@@ -195,9 +204,14 @@ int validatePath(const char *path, const struct flags_struct *flags)
   int rc = 0;
   struct stat sb;
 
-  if(!flags->quiet)
-    if(stat(path, &sb) != 0)
-      rc = 1;
+  if(flags == 0 || path == 0)
+    rc = 1;
+  else
+    {
+      if(!flags->quiet)
+	if(stat(path, &sb) != 0)
+	  rc = 1;
+    }
 
   return rc;
 }
@@ -206,6 +220,9 @@ static int used_exists(const struct flags_struct *flags, const char *value)
 {
   int i = 0;
 
+  if(flags == 0 || value == 0)
+    return -1;
+
   for(i = 0; i < flags->items_used; i++)
     if(strcmp(flags->used[i], value) == 0)
       return i;
@@ -213,9 +230,13 @@ static int used_exists(const struct flags_struct *flags, const char *value)
   return -1;
 }
 
-static int detached_exists(const struct flags_struct *flags, const char *value)
+static int detached_exists(const struct flags_struct *flags,
+			   const char *value)
 {
   int i = 0;
+
+  if(flags == 0 || value == 0)
+    return -1;
 
   for(i = 0; i < flags->items_detached; i++)
     if(strcmp(flags->detached[i], value) == 0)

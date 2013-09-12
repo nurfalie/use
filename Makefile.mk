@@ -6,7 +6,7 @@ INCLUDES	=	flags.h \
 			use_tmp.h
 INCLUDE_PATH	=	-I/usr/include -I.
 SRC		=	use.c validate.c
-LIBS		=	-lc
+LIBS		=	-lc -lm
 
 standard:	Makefile.tmp $(SRC) $(INCLUDES)
 		$(GCC) $(GCC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) \
