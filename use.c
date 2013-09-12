@@ -208,7 +208,8 @@ static int use(struct flags_struct *flags)
       if(PATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(PATH, tmp, size);
+	    (void) strncpy(PATH, tmp, fmin(size - strlen(PATH) - 1,
+					   strlen(tmp)));
 	}
       else
 	{
@@ -243,7 +244,8 @@ static int use(struct flags_struct *flags)
       if(MANPATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(MANPATH, tmp, size);
+	    (void) strncpy(MANPATH, tmp, fmin(size - strlen(MANPATH) - 1,
+					      strlen(tmp)));
 	}
       else if(size > 0)
 	{
@@ -278,7 +280,9 @@ static int use(struct flags_struct *flags)
       if(LD_LIBRARY_PATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(LD_LIBRARY_PATH, tmp, size);
+	    (void) strncpy(LD_LIBRARY_PATH, tmp,
+			   fmin(size - strlen(LD_LIBRARY_PATH) - 1,
+				strlen(tmp)));
 	}
       else if(size > 0)
 	{
@@ -315,7 +319,9 @@ static int use(struct flags_struct *flags)
       if(XFILESEARCHPATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(XFILESEARCHPATH, tmp, size);
+	    (void) strncpy(XFILESEARCHPATH, tmp,
+			   fmin(size - strlen(XFILESEARCHPATH) - 1,
+				strlen(tmp)));
 	}
       else if(size > 0)
 	{
