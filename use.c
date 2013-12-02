@@ -25,8 +25,6 @@
 ** THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <math.h>
-
 #include "use.h"
 
 /*
@@ -208,8 +206,7 @@ static int use(struct flags_struct *flags)
       if(PATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(PATH, tmp, fmin(size - strlen(PATH) - 1,
-					   strlen(tmp)));
+	    (void) strlcpy(PATH, tmp, size);
 	}
       else
 	{
@@ -244,8 +241,7 @@ static int use(struct flags_struct *flags)
       if(MANPATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(MANPATH, tmp, fmin(size - strlen(MANPATH) - 1,
-					      strlen(tmp)));
+	    (void) strlcpy(MANPATH, tmp, size);
 	}
       else if(size > 0)
 	{
@@ -280,9 +276,7 @@ static int use(struct flags_struct *flags)
       if(LD_LIBRARY_PATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(LD_LIBRARY_PATH, tmp,
-			   fmin(size - strlen(LD_LIBRARY_PATH) - 1,
-				strlen(tmp)));
+	    (void) strlcpy(LD_LIBRARY_PATH, tmp, size);
 	}
       else if(size > 0)
 	{
@@ -319,9 +313,7 @@ static int use(struct flags_struct *flags)
       if(XFILESEARCHPATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strncpy(XFILESEARCHPATH, tmp,
-			   fmin(size - strlen(XFILESEARCHPATH) - 1,
-				strlen(tmp)));
+	    (void) strlcpy(XFILESEARCHPATH, tmp, size);
 	}
       else if(size > 0)
 	{
@@ -719,9 +711,8 @@ static int allocenv(char **envvar, const char *value, const int action,
 	(void) fprintf(_stdout_, "echo \"Warning: %s "
 		       "is not a valid path.\"\n", value);
 
-      (void) strncat(tmp, value, fmin(size - strlen(tmp) - 1,
-				      strlen(value)));
-      (void) strncat(tmp, ":", fmin(size - strlen(tmp) - 1, 1));
+      (void) strlcat(tmp, value, size);
+      (void) strlcat(tmp, ":", size);
 
 #ifdef DEBUG
       (void) fprintf(stderr, "PATH1 = %s\n", value);
@@ -733,11 +724,10 @@ static int allocenv(char **envvar, const char *value, const int action,
   while(token != 0)
     {
       if((found = strcmp(token, value)) != 0)
-	(void) strncat(tmp, token, fmin(size - strlen(tmp) - 1,
-					strlen(token)));
+	(void) strlcat(tmp, token, size);
 
       if((token = strtok(0, ":")) != 0 && found != 0)
-	(void) strncat(tmp, ":", fmin(size - strlen(tmp) - 1, 1));
+	(void) strlcat(tmp, ":", size);
     }
 
   if(tmp[strlen(tmp) - 1] == ':')
