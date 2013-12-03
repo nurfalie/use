@@ -206,7 +206,7 @@ static int use(struct flags_struct *flags)
       if(PATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strlcpy(PATH, tmp, size);
+	    (void) strncpy(PATH, tmp, size - 1);
 	}
       else
 	{
@@ -241,7 +241,7 @@ static int use(struct flags_struct *flags)
       if(MANPATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strlcpy(MANPATH, tmp, size);
+	    (void) strncpy(MANPATH, tmp, size - 1);
 	}
       else if(size > 0)
 	{
@@ -276,7 +276,7 @@ static int use(struct flags_struct *flags)
       if(LD_LIBRARY_PATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strlcpy(LD_LIBRARY_PATH, tmp, size);
+	    (void) strncpy(LD_LIBRARY_PATH, tmp, size - 1);
 	}
       else if(size > 0)
 	{
@@ -313,7 +313,7 @@ static int use(struct flags_struct *flags)
       if(XFILESEARCHPATH != 0)
 	{
 	  if(tmp != 0)
-	    (void) strlcpy(XFILESEARCHPATH, tmp, size);
+	    (void) strncpy(XFILESEARCHPATH, tmp, size - 1);
 	}
       else if(size > 0)
 	{
@@ -711,8 +711,8 @@ static int allocenv(char **envvar, const char *value, const int action,
 	(void) fprintf(_stdout_, "echo \"Warning: %s "
 		       "is not a valid path.\"\n", value);
 
-      (void) strlcat(tmp, value, size);
-      (void) strlcat(tmp, ":", size);
+      (void) strncat(tmp, value, size - strlen(tmp) - 1);
+      (void) strncat(tmp, ":", size - strlen(tmp) - 1);
 
 #ifdef DEBUG
       (void) fprintf(stderr, "PATH1 = %s\n", value);
@@ -724,10 +724,10 @@ static int allocenv(char **envvar, const char *value, const int action,
   while(token != 0)
     {
       if((found = strcmp(token, value)) != 0)
-	(void) strlcat(tmp, token, size);
+	(void) strncat(tmp, token, size - strlen(tmp) - 1);
 
       if((token = strtok(0, ":")) != 0 && found != 0)
-	(void) strlcat(tmp, ":", size);
+	(void) strncat(tmp, ":", size - strlen(tmp) - 1);
     }
 
   if(tmp[strlen(tmp) - 1] == ':')
