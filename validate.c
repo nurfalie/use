@@ -60,7 +60,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 		{
 		  (void) snprintf(flags->detached[flags->items_detached],
 				  sizeof(flags->detached[0]), "%s", *argv);
-		  flags->items_detached += 1;
+		  flags->items_detached++;
 		}
 	      else if(!flags->quiet)
 		(void) fprintf(_stdout_, "echo \"Warning: %s is a "
@@ -169,7 +169,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 		{
 		  (void) snprintf(flags->used[flags->items_used],
 				  sizeof(flags->used[0]), "%s", *argv);
-		  flags->items_used += 1;
+		  flags->items_used++;
 		}
 	      else if(!flags->quiet)
 		(void) fprintf(_stdout_, "echo \"Warning: %s is a "
