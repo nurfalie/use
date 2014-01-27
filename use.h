@@ -24,11 +24,7 @@
 char filename[PATH_MAX];
 FILE *_stdout_;
 
-/*
-** -- Defines --
-*/
-
-#define VERSION "1.10.3"
+#define VERSION "1.10.4"
 
 #ifndef EXIT_SUCCESS
 #define EXIT_SUCCESS 0
@@ -51,10 +47,6 @@ enum
     SH,
     TCSH
   };
-
-/*
-** -- Local Functions --
-*/
 
 int validate(const int argc, char *argv[], struct flags_struct *flags);
 int validatePath(const char *path, const struct flags_struct *flags);

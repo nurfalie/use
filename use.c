@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2006, 2007, 2013 Alexis Megas
+** Copyright (c) 2006, 2007, 2013, 2014 Alexis Megas
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
@@ -31,31 +31,31 @@
 ** -- Local variables --
 */
 
-static char *PATH = 0;
-static char *MANPATH = 0;
 static char *LD_LIBRARY_PATH = 0;
+static char *MANPATH = 0;
+static char *PATH = 0;
 static char *XFILESEARCHPATH = 0;
 
 /*
 ** -- Local Functions --
 */
 
-static int use(struct flags_struct *);
-static int prepare(FILE *, const char *, const struct flags_struct *,
-		   const int);
 static int allocenv(char **, const char *, const int,
 		    const struct flags_struct *);
+static int prepare(FILE *, const char *, const struct flags_struct *,
+		   const int);
+static void reset(struct flags_struct *);
 static int updatevariable(const char *, const char *,
 			  const struct flags_struct *, const int);
-static void reset(struct flags_struct *);
+static int use(struct flags_struct *);
 
 int main(int argc, char *argv[])
 {
-  int rc = 0;
-  char *tmp = 0;
-  char line[MAX_LINE_LENGTH];
-  char filename[PATH_MAX];
   FILE *fp = 0;
+  char filename[PATH_MAX];
+  char line[MAX_LINE_LENGTH];
+  char *tmp = 0;
+  int rc = 0;
   struct flags_struct flags;
 
   (void) memset(filename, 0, sizeof(filename));
@@ -131,9 +131,9 @@ int main(int argc, char *argv[])
     }
 
   rc = use(&flags);
-  free(PATH);
-  free(MANPATH);
   free(LD_LIBRARY_PATH);
+  free(MANPATH);
+  free(PATH);
   free(XFILESEARCHPATH);
 
  done_label:
@@ -150,42 +150,42 @@ static void reset(struct flags_struct *flags)
 {
   int i = 0;
 
-  flags->list = 0;
   flags->about = 0;
-  flags->quiet = 0;
-  flags->pretend = 0;
-  flags->items_used = 0;
-  flags->no_path = 0;
-  flags->no_manpath = 0;
-  flags->shell_type = 0;
   flags->items_detached = 0;
+  flags->items_used = 0;
+  flags->list = 0;
   flags->no_ld_library_path = 0;
+  flags->no_manpath = 0;
+  flags->no_path = 0;
   flags->no_xfilesearchpath = 0;
+  flags->pretend = 0;
+  flags->quiet = 0;
+  flags->shell_type = 0;
 
   for(i = 0; i < MAX_PRODUCTS; i++)
     {
-      (void) memset(flags->used[i], 0, sizeof(flags->used[0]));
       (void) memset(flags->detached[i], 0, sizeof(flags->detached[0]));
+      (void) memset(flags->used[i], 0, sizeof(flags->used[0]));
     }
 }
 
 static int use(struct flags_struct *flags)
 {
-  int i = 0;
-  int rc = 0;
-  int found = 0;
-  int dousevalues[4]; /* This should be the same size as stdvariables. */
-  char *tmp = 0;
-  char line[MAX_LINE_LENGTH];
+  FILE *fp = 0;
   char envact[MAX_LINE_LENGTH];
+  char line[MAX_LINE_LENGTH];
   char *product = 0;
   char *stdvalues[4]; /* This should be the same size as stdvariables. */
   char *stdvariables[] = {"PATH",
 			  "MANPATH",
 			  "LD_LIBRARY_PATH",
 			  "XFILESEARCHPATH"};
+  char *tmp = 0;
+  int dousevalues[4]; /* This must be the same size as stdvariables. */
+  int found = 0;
+  int i = 0;
+  int rc = 0;
   size_t size = 0;
-  FILE *fp = 0;
 
   if(flags->no_path == 0)
     {
@@ -547,11 +547,11 @@ static int prepare(FILE *fp, const char *product,
 		   const struct flags_struct *flags,
 		   const int action)
 {
-  int rc = 0;
-  char line[MAX_LINE_LENGTH];
   char *lasts;
+  char line[MAX_LINE_LENGTH];
   char *value = 0;
   char *variable = 0;
+  int rc = 0;
 
   /*
   ** The order of the products listed is significant. Products at the
@@ -607,8 +607,8 @@ static int prepare(FILE *fp, const char *product,
 static int updatevariable(const char *variable, const char *value,
 			  const struct flags_struct *flags, const int action)
 {
-  int rc = 0;
   char envact[MAX_LINE_LENGTH];
+  int rc = 0;
 
   if(flags == 0 || value == 0 || variable == 0 || strlen(variable) == 0)
     {
@@ -684,10 +684,10 @@ static int updatevariable(const char *variable, const char *value,
 static int allocenv(char **envvar, const char *value, const int action,
 		    const struct flags_struct *flags)
 {
-  int rc = 0;
-  int found = 0;
   char *tmp = 0;
   char *token = 0;
+  int found = 0;
+  int rc = 0;
   size_t size = 0;
 
   if(*envvar == 0)

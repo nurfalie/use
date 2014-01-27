@@ -1,14 +1,14 @@
 #include "use.h"
 
-static int used_exists
-(const struct flags_struct *flags, const char *value);
-static int detached_exists
-(const struct flags_struct *flags, const char *value);
+static int used_exists(const struct flags_struct *flags,
+		       const char *value);
+static int detached_exists(const struct flags_struct *flags,
+			   const char *value);
 
 int validate(const int argc, char *argv[], struct flags_struct *flags)
 {
-  int i = 0;
   int ct = 0;
+  int i = 0;
   int rc = 0;
 
   if(flags == 0)
