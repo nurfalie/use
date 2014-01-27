@@ -1,5 +1,5 @@
-standard:	Makefile.tmp
-		$(MAKE) -f Makefile.mk
+all:	Makefile.tmp
+	$(MAKE) -f Makefile.mk
 
 Makefile.tmp:
 	./configure.pl
@@ -7,11 +7,12 @@ Makefile.tmp:
 clean:
 	$(MAKE) -f Makefile.mk clean
 
-purge:
-	$(MAKE) -f Makefile.mk purge
-
 distclean:
 	$(MAKE) -f Makefile.mk distclean
 
 install:
 	$(MAKE) -f Makefile.mk install
+
+purge:
+	$(MAKE) -f Makefile.mk purge
+

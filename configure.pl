@@ -123,8 +123,8 @@ $mandir = $val;
 
 # Create Makefile.tmp.
 
-$mktmp = "INSTALL_PATH = " . $bindir . "\n" .
-  "INSTALL_MANPATH = " . $mandir . "\n" .
+$mktmp = "INSTALL_MANPATH = " . $mandir . "\n" .
+  "INSTALL_PATH = " . $bindir . "\n" .
   "INSTALL_TABLEFULLPATH = " . $usetabledir . "\n";
 
 if(!open(OUTPUT, "+> ./Makefile.tmp"))
