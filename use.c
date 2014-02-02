@@ -108,10 +108,11 @@ int main(int argc, char *argv[])
 	      {
 		tmp = strstr(line, ":") + 1;
 
-		if(tmp[strlen(tmp) - 1] == '\n')
+		if(tmp && strlen(tmp) > 0 && tmp[strlen(tmp) - 1] == '\n')
 		  tmp[strlen(tmp) - 1] = 0;
 
-		(void) fprintf(_stdout_, "echo \"%s\"\n", tmp);
+		if(tmp)
+		  (void) fprintf(_stdout_, "echo \"%s\"\n", tmp);
 	      }
 
 	  (void) fclose(fp);
@@ -182,7 +183,6 @@ static int use(struct flags_struct *flags)
 			  "XFILESEARCHPATH"};
   char *tmp = 0;
   int dousevalues[4]; /* This must be the same size as stdvariables. */
-  int found = 0;
   int i = 0;
   int rc = 0;
   size_t size = 0;
@@ -333,6 +333,8 @@ static int use(struct flags_struct *flags)
 
   if((fp = fopen(USETABLE, "r")) != 0)
     {
+      int found = 0;
+
       for(i = flags->items_detached - 1; i >= 0; i--)
 	{
 	  found = 0;
@@ -343,7 +345,8 @@ static int use(struct flags_struct *flags)
 	      {
 		product = line;
 
-		if(strstr(product, ".") != 0)
+		if(strstr(product, ".") != 0 &&
+		   strlen(product) - strlen(strstr(product, ".")) > 0)
 		  {
 		    product[strlen(product) -
 			    strlen(strstr(product, "."))] = 0;
@@ -405,7 +408,8 @@ static int use(struct flags_struct *flags)
 	      {
 		product = line;
 
-		if(strstr(product, ".") != 0)
+		if(strstr(product, ".") != 0 &&
+		   strlen(product) - strlen(strstr(product, ".")) > 0)
 		  {
 		    product[strlen(product) -
 			    strlen(strstr(product, "."))] = 0;
@@ -730,7 +734,7 @@ static int allocenv(char **envvar, const char *value, const int action,
 	(void) strncat(tmp, ":", size - strlen(tmp) - 1);
     }
 
-  if(tmp[strlen(tmp) - 1] == ':')
+  if(strlen(tmp) > 0 && tmp[strlen(tmp) - 1] == ':')
     tmp[strlen(tmp) - 1] = 0;
 
   free(*envvar);
