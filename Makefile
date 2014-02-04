@@ -7,6 +7,9 @@ Makefile.tmp:
 clean:
 	$(MAKE) -f Makefile.mk clean
 
+debug:
+	$(MAKE) -f Makefile.mk debug
+
 distclean:
 	$(MAKE) -f Makefile.mk distclean
 
@@ -15,4 +18,3 @@ install:
 
 purge:
 	$(MAKE) -f Makefile.mk purge
-

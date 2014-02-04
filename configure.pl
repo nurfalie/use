@@ -61,8 +61,8 @@ $tmpdir = $val;
 
 $use_tmp = "#ifndef _use_temp_h_\n" .
   "#define _use_temp_h_\n" .
-  "#define USETABLE \"" . $usetabledir . "\"\n" .
   "#define TEMPDIR \"" . $tmpdir . "\"\n" .
+  "#define USETABLE \"" . $usetabledir . "\"\n" .
   "#endif\n";
 
 if(!open(OUTPUT, "+> ./use_tmp.h"))

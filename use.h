@@ -24,14 +24,14 @@
 char filename[PATH_MAX];
 FILE *_stdout_;
 
-#define VERSION "1.10.3"
-
-#ifndef EXIT_SUCCESS
-#define EXIT_SUCCESS 0
-#endif
+#define VERSION "1.10.4"
 
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1
+#endif
+
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS 0
 #endif
 
 #define MAX_LINE_LENGTH (PATH_MAX + MAX_PRODUCT_NAME_LENGTH + 128)

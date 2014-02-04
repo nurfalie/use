@@ -7,7 +7,6 @@ static int detached_exists(const struct flags_struct *flags,
 
 int validate(const int argc, char *argv[], struct flags_struct *flags)
 {
-  int ct = 0;
   int i = 0;
   int rc = 0;
 
@@ -26,8 +25,6 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 
   for(argv++; *argv != 0; argv++)
     {
-      ct += 1;
-
       if(strcmp(*argv, "-a") == 0)
 	{
 	  if(argc > 4)
@@ -60,7 +57,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 		{
 		  (void) snprintf(flags->detached[flags->items_detached],
 				  sizeof(flags->detached[0]), "%s", *argv);
-		  flags->items_detached++;
+		  flags->items_detached += 1;
 		}
 	      else if(!flags->quiet)
 		(void) fprintf(_stdout_, "echo \"Warning: %s is a "
@@ -169,7 +166,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 		{
 		  (void) snprintf(flags->used[flags->items_used],
 				  sizeof(flags->used[0]), "%s", *argv);
-		  flags->items_used++;
+		  flags->items_used += 1;
 		}
 	      else if(!flags->quiet)
 		(void) fprintf(_stdout_, "echo \"Warning: %s is a "

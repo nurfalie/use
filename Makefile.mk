@@ -5,13 +5,13 @@ GCC_OPTIONS	=	-Wall -Werror -Wextra -Wstack-protector \
 INCLUDES	=	flags.h \
 			use.h \
 			use_tmp.h
-INCLUDE_PATH	=	-I/usr/include -I.
+INCLUDE_PATH	=	-I. -I/usr/include
 LIBS		=	-lc -lm
 SRC		=	use.c validate.c
 
-all:	Makefile.tmp $(SRC) $(INCLUDES)
-	$(GCC) $(GCC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) \
-	-o use.bin $(SRC) $(LIBS)
+all:	Makefile.tmp $(INCLUDES) $(SRC)
+	$(GCC) $(GCC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) -o use.bin \
+	$(SRC) $(LIBS)
 	chmod g+rx,o+rx,u+rx use.bin
 
 clean:
@@ -21,15 +21,13 @@ debug:
 	$(MAKE) -e DEBUG=-DDEBUG
 
 distclean: clean purge
-	rm -f use_tmp.h Makefile.tmp
+	rm -f Makefile.tmp use_tmp.h
 
 install:
 	$(MAKE) -f Makefile
-	cp -f use.bin use.sh use.csh use.ksh use.bash use.tcsh \
-		${INSTALL_PATH}/.
-	cp -f use.1 ${INSTALL_MANPATH}/.
-	cp -f use.table ${INSTALL_TABLEFULLPATH}
+	cp -f use.1 ${INSTALL_MANPATH}/. && \
+	cp -f use.bash use.bin use.csh use.ksh use.sh use.tcsh \
+	${INSTALL_PATH}/. && cp -f use.table ${INSTALL_TABLEFULLPATH}
 
 purge:
 	rm -f *~
-

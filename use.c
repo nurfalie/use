@@ -59,8 +59,9 @@ int main(int argc, char *argv[])
   struct flags_struct flags;
 
   (void) memset(filename, 0, sizeof(filename));
-  (void) snprintf(filename, sizeof(filename), "%s/.use.sourceme.%ud.%ud",
-		  TEMPDIR, getuid(), getpid());
+  (void) snprintf
+    (filename, sizeof(filename), "%s/.use.sourceme.%lu.%lu",
+     TEMPDIR, (unsigned long) getuid(), (unsigned long) getpid());
 
   if((_stdout_ = fopen(filename, "a+")) == 0)
     {
@@ -696,10 +697,16 @@ static int allocenv(char **envvar, const char *value, const int action,
 
   if(*envvar == 0)
     goto done_label;
-  else if(action == ADD_PATH && value && strlen(value) > 0)
+  else if(action == ADD_PATH && value != 0 && strlen(value) > 0)
     size = strlen(*envvar) + strlen(value) + strlen(":") + 1;
   else
     size = strlen(*envvar) + 1;
+
+  if(size == 0)
+    {
+      rc = 1;
+      goto done_label;
+    }
 
   if((tmp = malloc(size)) == 0)
     {
@@ -709,14 +716,17 @@ static int allocenv(char **envvar, const char *value, const int action,
 
   (void) memset(tmp, 0, size);
 
-  if(action == ADD_PATH && strlen(value) > 0)
+  if(action == ADD_PATH && value != 0 && strlen(value) > 0)
     {
       if(validatePath(value, flags) != 0)
 	(void) fprintf(_stdout_, "echo \"Warning: %s "
 		       "is not a valid path.\"\n", value);
 
-      (void) strncat(tmp, value, size - strlen(tmp) - 1);
-      (void) strncat(tmp, ":", size - strlen(tmp) - 1);
+      if(size > strlen(tmp))
+	(void) strncat(tmp, value, size - strlen(tmp) - 1);
+
+      if(size > strlen(tmp))
+	(void) strncat(tmp, ":", size - strlen(tmp) - 1);
 
 #ifdef DEBUG
       (void) fprintf(stderr, "PATH1 = %s\n", value);
@@ -728,10 +738,12 @@ static int allocenv(char **envvar, const char *value, const int action,
   while(token != 0)
     {
       if((found = strcmp(token, value)) != 0)
-	(void) strncat(tmp, token, size - strlen(tmp) - 1);
+	if(size > strlen(tmp))
+	  (void) strncat(tmp, token, size - strlen(tmp) - 1);
 
       if((token = strtok(0, ":")) != 0 && found != 0)
-	(void) strncat(tmp, ":", size - strlen(tmp) - 1);
+	if(size > strlen(tmp))
+	  (void) strncat(tmp, ":", size - strlen(tmp) - 1);
     }
 
   if(strlen(tmp) > 0 && tmp[strlen(tmp) - 1] == ':')

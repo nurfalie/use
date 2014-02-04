@@ -13,9 +13,9 @@ struct flags_struct
   int items_detached;
   int items_used;
   int list;
-  int no_path;
-  int no_manpath;
   int no_ld_library_path;
+  int no_manpath;
+  int no_path;
   int no_xfilesearchpath;
   int pretend;
   int quiet;
