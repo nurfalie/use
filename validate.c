@@ -10,7 +10,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
   int i = 0;
   int rc = 0;
 
-  if(flags == 0)
+  if(!flags)
     {
       rc = 1;
       return rc;
@@ -201,7 +201,7 @@ int validatePath(const char *path, const struct flags_struct *flags)
   int rc = 0;
   struct stat sb;
 
-  if(flags == 0 || path == 0)
+  if(!flags || !path)
     rc = 1;
   else
     {
@@ -217,7 +217,7 @@ static int used_exists(const struct flags_struct *flags, const char *value)
 {
   int i = 0;
 
-  if(flags == 0 || value == 0)
+  if(!flags || !value)
     return -1;
 
   for(i = 0; i < flags->items_used; i++)
@@ -232,7 +232,7 @@ static int detached_exists(const struct flags_struct *flags,
 {
   int i = 0;
 
-  if(flags == 0 || value == 0)
+  if(!flags || !value)
     return -1;
 
   for(i = 0; i < flags->items_detached; i++)
