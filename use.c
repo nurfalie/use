@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2006, 2007, 2013, 2014 Alexis Megas
+** Copyright (c) 2006 - Eternity Alexis Megas
 ** All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
