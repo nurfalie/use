@@ -503,6 +503,8 @@ static int use(struct flags_struct *flags)
 	if(stdvalues[i] != 0 &&
 	   strlen(stdvalues[i]) > 0) /* In case the -n option was used. */
 	  {
+	    (void) memset(envact, 0, sizeof(envact));
+
 	    if(flags->shell_type == SH)
 	      (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			      stdvariables[i],
@@ -523,6 +525,8 @@ static int use(struct flags_struct *flags)
 	      (void) snprintf(envact, sizeof(envact), "setenv %s %s",
 			      stdvariables[i],
 			      stdvalues[i]);
+	    else
+	      continue;
 
 	    if(flags->pretend)
 	      (void) fprintf(_stdout_, "echo \"%s\"\n", envact);
@@ -531,6 +535,8 @@ static int use(struct flags_struct *flags)
 	  }
 	else if(dousevalues[i] == 0)
 	  {
+	    (void) memset(envact, 0, sizeof(envact));
+
 	    if(flags->shell_type == SH)
 	      (void) snprintf(envact, sizeof(envact), "unset %s",
 			      stdvariables[i]);
@@ -546,6 +552,8 @@ static int use(struct flags_struct *flags)
 	    else if(flags->shell_type == TCSH)
 	      (void) snprintf(envact, sizeof(envact), "unsetenv %s",
 			      stdvariables[i]);
+	    else
+	      continue;
 
 	    if(flags->pretend)
 	      (void) fprintf(_stdout_, "echo \"%s\"\n", envact);
@@ -654,6 +662,8 @@ static int updatevariable(const char *variable, const char *value,
 	    (void) fprintf(_stdout_, "echo \"Warning: %s "
 			   "is not a valid path.\"\n", value);
 
+	  (void) memset(envact, 0, sizeof(envact));
+
 	  if(flags->shell_type == SH)
 	    (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			    variable, value);
@@ -672,6 +682,8 @@ static int updatevariable(const char *variable, const char *value,
 	}
       else
 	{
+	  (void) memset(envact, 0, sizeof(envact));
+
 	  if(flags->shell_type == SH)
 	    (void) snprintf(envact, sizeof(envact), "unset %s", variable);
 	  else if(flags->shell_type == CSH)
@@ -684,10 +696,13 @@ static int updatevariable(const char *variable, const char *value,
 	    (void) snprintf(envact, sizeof(envact), "unsetenv %s", variable);
 	}
 
-      if(flags->pretend)
-	(void) fprintf(_stdout_, "echo \"%s\"\n", envact);
-      else
-	(void) fprintf(_stdout_, "%s\n", envact);
+      if(strlen(envact) > 0)
+	{
+	  if(flags->pretend)
+	    (void) fprintf(_stdout_, "echo \"%s\"\n", envact);
+	  else
+	    (void) fprintf(_stdout_, "%s\n", envact);
+	}
     }
 
   return rc;
@@ -765,7 +780,10 @@ static int allocenv(char **envvar, const char *value, const int action,
       goto done_label;
     }
   else
-    (void) snprintf(*envvar, size, "%s", tmp);
+    {
+      (void) memset(*envvar, 0, size);
+      (void) snprintf(*envvar, size, "%s", tmp);
+    }
 
  done_label:
   free(tmp);

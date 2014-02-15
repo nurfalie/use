@@ -55,6 +55,9 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	    {
 	      if(detached_exists(flags, *argv) == -1)
 		{
+		  (void) memset
+		    (flags->detached[flags->items_detached], 0,
+		     sizeof(flags->detached[flags->items_detached]));
 		  (void) snprintf(flags->detached[flags->items_detached],
 				  sizeof(flags->detached[0]), "%s", *argv);
 		  flags->items_detached += 1;
@@ -164,6 +167,9 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	    {
 	      if(used_exists(flags, *argv) == -1)
 		{
+		  (void) memset
+		    (flags->used[flags->items_used], 0,
+		     sizeof(flags->used[flags->items_used]));
 		  (void) snprintf(flags->used[flags->items_used],
 				  sizeof(flags->used[0]), "%s", *argv);
 		  flags->items_used += 1;
