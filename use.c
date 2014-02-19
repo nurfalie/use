@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 
   if(!(_stdout_ = fopen(filename, "a+")))
     {
-      (void) fprintf(stdout, "/dev/null");
+      (void) fprintf(stdout, "%s", "/dev/null");
       return EXIT_FAILURE;
     }
   else
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
       rc = 1;
 
       if(!flags.quiet)
-	(void) fprintf(_stdout_, "echo \"use: incorrect usage.\"\n");
+	(void) fprintf(_stdout_, "%s", "echo \"use: incorrect usage.\"\n");
 
       goto done_label;
     }
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
     }
   else if(flags.about)
     {
-      (void) fprintf(_stdout_, "echo \"USE\"\n");
+      (void) fprintf(_stdout_, "%s", "echo \"USE\"\n");
       (void) fprintf(_stdout_, "echo \"Version: %s\"\n", VERSION);
       (void) fprintf(_stdout_, "echo \"Compilation Date & Time: %s %s\"\n",
 		     __DATE__, __TIME__);
@@ -223,14 +223,15 @@ static int use(struct flags_struct *flags)
 	  rc = 1;
 
 	  if(!flags->quiet)
-	    (void) fprintf(_stdout_, "echo \"Error: unable to allocate "
+	    (void) fprintf(_stdout_, "%s",
+			   "echo \"Error: unable to allocate "
 			   "memory for PATH.\"\n");
 
 	  goto done_label;
 	}
     }
   else if(!flags->quiet)
-    (void) fprintf(_stdout_, "echo \"Warning: PATH not updated.\"\n");
+    (void) fprintf(_stdout_, "%s", "echo \"Warning: PATH not updated.\"\n");
 
   if(flags->no_manpath == 0)
     {
@@ -258,14 +259,16 @@ static int use(struct flags_struct *flags)
 	  rc = 1;
 
 	  if(!flags->quiet)
-	    (void) fprintf(_stdout_, "echo \"Error: unable to allocate "
+	    (void) fprintf(_stdout_, "%s",
+			   "echo \"Error: unable to allocate "
 			   "memory for MANPATH.\"\n");
 
 	  goto done_label;
 	}
     }
   else if(!flags->quiet)
-    (void) fprintf(_stdout_, "echo \"Warning: MANPATH not updated.\"\n");
+    (void) fprintf(_stdout_, "%s",
+		   "echo \"Warning: MANPATH not updated.\"\n");
 
   if(flags->no_ld_library_path == 0)
     {
@@ -293,7 +296,7 @@ static int use(struct flags_struct *flags)
 	  rc = 1;
 
 	  if(!flags->quiet)
-	    (void) fprintf(_stdout_,
+	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate memory for "
 			   "LD_LIBRARY_PATH.\"\n");
 
@@ -301,7 +304,8 @@ static int use(struct flags_struct *flags)
 	}
     }
   else if(!flags->quiet)
-    (void) fprintf(_stdout_, "echo \"Warning: LD_LIBRARY_PATH not "
+    (void) fprintf(_stdout_, "%s",
+		   "echo \"Warning: LD_LIBRARY_PATH not "
 		   "updated.\"\n");
 
   if(flags->no_xfilesearchpath == 0)
@@ -330,7 +334,7 @@ static int use(struct flags_struct *flags)
 	  rc = 1;
 
 	  if(!flags->quiet)
-	    (void) fprintf(_stdout_,
+	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate memory for "
 			   "XFILESEARCHPATH.\"\n");
 
@@ -338,7 +342,8 @@ static int use(struct flags_struct *flags)
 	}
     }
   else if(!flags->quiet)
-    (void) fprintf(_stdout_, "echo \"Warning: XFILESEARCHPATH not "
+    (void) fprintf(_stdout_, "%s",
+		   "echo \"Warning: XFILESEARCHPATH not "
 		   "updated.\"\n");
 
   if((fp = fopen(USETABLE, "r")))
