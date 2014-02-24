@@ -15,7 +15,7 @@ all:	Makefile.tmp $(INCLUDES) $(SRC)
 	chmod g+rx,o+rx,u+rx use.bin
 
 clean:
-	rm -f use.bin use.core core
+	rm -f core use.bin use.core
 
 debug:
 	$(MAKE) -e DEBUG=-DDEBUG
