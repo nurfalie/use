@@ -1,0 +1,114 @@
+1.10.7 (02/24/2014)
+
+1. Added formats to all fprintf() statements.
+2. Included codes in shell exits.
+3. Use /bin instead of /usr/bin in shell scripts.
+
+1.10.6 (02/18/2014)
+
+1. Clear buffers before using snprintf().
+
+1.10.5 (02/06/2014)
+
+1.Guard against empty pointers.
+
+1.10.4 (02/04/2014)
+
+1. Corrected arguments to snprintf().
+2. Protect against negative size_t values.
+
+1.10.4 (02/01/2014)
+
+1. Protect array boundaries.
+
+1.10.2 (09/12/2013)
+
+1. Improved parameter checking for strncpy().
+2. Inspect pointers.
+3. Replaced source with dot for BASH.
+4. Replaced strcat() with strncat().
+
+1.10.1 (09/03/2013)
+
+1. Added PIE and stack-smashing protection.
+2. Use strncpy() instead of strcpy().
+
+1.10.0 (03/13/2009)
+
+1. Modified the make files.
+2. Version remains at 1.10.0.
+
+1.10.0 (02/29/2008)
+
+1. Resolved several compilation issues.
+
+1.09.0 (11/02/2007)
+
+1. Modified the manual page.
+2. Version remains at 1.09.0.
+
+1.09.0 (03/06/2007)
+
+1. Minor flaw fixed with the new 1.09.0 addition. Also updated the manual
+   page.
+
+1.09.0 (02/28/2007)
+
+1. Warn the user if a product references a nonexistent path.
+
+1.08.0 (11/17/2006)
+
+1. A new option (-p) has been introduced. Please read the man page for
+   more information.
+
+1.07.0 (10/24/2006)
+
+1. A minor fix.
+
+1.06.0 (09/22/2006)
+
+1. This version allows variables to contain multiple paths, for example,
+   ddd.PATH:/usr/local/bin:/opt/sfw/bin.
+
+1.05.0 (09/17/2006)
+
+1. Spelling corrections.
+2. Version remains at 1.05.0.
+
+1.05.0 (08/13/2006)
+
+1. Detached products should be processed first.
+2. Version remains at 1.05.0.
+
+1.05.0 (08/02/2006)
+
+1. Bug fix. The environment variable XFILESEARCHPATH was not being set
+   properly.
+
+1.04.0 (06/23/2006)
+
+1. Bug fix. Use set crucial paths (MANPATH, PATH, etc.) even if they
+   were not specified in the use.table file.
+
+1.03.0 (06/23/2006)
+
+1. A NULL envvar value caused allocenv() to misbehave.
+
+1.02.0 (06/21/2006)
+
+1. Updated use.tcsh.
+2. Version remains at 1.02.0.
+
+1.02.0 (06/19/2006)
+
+1. Resolved an issue with the quiet option.
+
+1.01.0 (06/18/2006)
+
+1. This release includes some fixes to the shell scripts as well as
+   the binary. A new Perl installation script has also been added. Please
+   read the INSTALL file for complete information.
+
+1.00.0 (06/16/2006)
+
+1. Initial release.
