@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
   else
     (void) fprintf(stdout, "%s", filename);
 
-  (void) setvbuf(_stdout_, 0, _IONBF, 0);
+  (void) setvbuf(_stdout_, 0, _IONBF, (size_t) 0);
 
   /*
   ** Reset the structure.
