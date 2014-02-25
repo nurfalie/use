@@ -598,7 +598,7 @@ static int prepare(FILE *fp, const char *product,
 	  variable = strtok_r(0, ":", &lasts);
 
 	if(!(value = strtok_r(0, ":", &lasts)))
-	  value = (char *) "";
+	  value = "";
 
 	do
 	  {

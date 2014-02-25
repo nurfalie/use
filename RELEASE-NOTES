@@ -1,3 +1,7 @@
+1.10.8 (02/28/2014)
+
+1. Added the Wconversion and Wformat compiler flags.
+
 1.10.7 (02/24/2014)
 
 1. Added formats to all fprintf() statements.
