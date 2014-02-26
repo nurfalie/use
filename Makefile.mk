@@ -2,7 +2,7 @@
 GCC		= gcc
 GCC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
 		  -Wstack-protector \
-		  -ansi -fPIE -fstack-protector-all -pedantic
+		  -fPIE -fstack-protector-all -pedantic
 INCLUDES	= flags.h \
 		  use.h \
 		  use_tmp.h
