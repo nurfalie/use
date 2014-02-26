@@ -1,14 +1,14 @@
 -include ./Makefile.tmp
-GCC		=	gcc
-GCC_OPTIONS	=	-Wall -Wconversion -Werror -Wextra -Wformat \
-			-Wstack-protector \
-			-fPIE -fstack-protector-all -pedantic
-INCLUDES	=	flags.h \
-			use.h \
-			use_tmp.h
-INCLUDE_PATH	=	-I. -I/usr/include
-LIBS		=	-lc -lm
-SRC		=	use.c validate.c
+GCC		= gcc
+GCC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
+		  -Wstack-protector \
+		  -ansi -fPIE -fstack-protector-all -pedantic
+INCLUDES	= flags.h \
+		  use.h \
+		  use_tmp.h
+INCLUDE_PATH	= -I. -I/usr/include
+LIBS		= -lc -lm
+SRC		= use.c validate.c
 
 all:	Makefile.tmp $(INCLUDES) $(SRC)
 	$(GCC) $(GCC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) -o use.bin \
