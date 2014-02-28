@@ -1,6 +1,5 @@
 -include ./Makefile.tmp
-GCC		= gcc
-GCC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
+CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
 		  -Wstack-protector \
 		  -fPIE -fstack-protector-all -pedantic
 INCLUDES	= flags.h \
@@ -11,7 +10,7 @@ LIBS		= -lc -lm
 SRC		= use.c validate.c
 
 all:	Makefile.tmp $(INCLUDES) $(SRC)
-	$(GCC) $(GCC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) -o use.bin \
+	$(CC) $(CC_OPTIONS) $(DEBUG) $(INCLUDE_PATH) -o use.bin \
 	$(SRC) $(LIBS)
 	chmod g+rx,o+rx,u+rx use.bin
 

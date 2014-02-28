@@ -1,6 +1,8 @@
 1.10.8 (02/28/2014)
 
 1. Added the Wconversion and Wformat compiler flags.
+2. Replaced GCC with CC in Makefile.mk.
+3. Replaced GCC_OPTIONS with CC_OPTIONS in Makefile.mk.
 
 1.10.7 (02/24/2014)
 

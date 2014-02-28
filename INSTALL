@@ -2,5 +2,5 @@
    path for Perl.
 2. Verify that all of the shell scripts reference the correct
    shell paths.
-3. Execute make.
-4. Execute sudo make install.
+3. Execute make. Please use gmake on FreeBSD.
+4. Execute sudo make install. Please use gmake on FreeBSD.
