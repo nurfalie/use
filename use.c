@@ -139,8 +139,11 @@ int main(int argc, char *argv[])
   free(XFILESEARCHPATH);
 
  done_label:
-  (void) fflush(_stdout_);
-  (void) fclose(_stdout_);
+  if(_stdout_)
+    {
+      (void) fflush(_stdout_);
+      (void) fclose(_stdout_);
+    }
 
   if(rc != 0)
     return EXIT_FAILURE;

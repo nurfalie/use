@@ -1,3 +1,7 @@
+1.10.9 (04/12/2014)
+
+1. Guard against invalid _stdout_.
+
 1.10.8 (02/28/2014)
 
 1. Added the Wconversion and Wformat compiler flags.
