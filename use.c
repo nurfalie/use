@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
 	      }
 
 	  (void) fclose(fp);
+	  fp = 0;
 	}
 
       goto done_label;
@@ -194,7 +195,7 @@ static int use(struct flags_struct *flags)
   int rc = 0;
   size_t size = 0;
 
-  if(!flags)
+  if(!_stdout_ || !flags)
     {
       rc = 1;
       goto done_label;
@@ -490,7 +491,10 @@ static int use(struct flags_struct *flags)
  done_label:
 
   if(fp)
-    (void) fclose(fp);
+    {
+      (void) fclose(fp);
+      fp = 0;
+    }
 
   if(rc == 0)
     {
@@ -638,7 +642,7 @@ static int updatevariable(const char *variable, const char *value,
   char envact[MAX_LINE_LENGTH];
   int rc = 0;
 
-  if(!flags || !value || !variable || strlen(variable) == 0)
+  if(!_stdout_ || !flags || !value || !variable || strlen(variable) == 0)
     {
     }
   else if(strcmp(variable, "PATH") == 0)
@@ -725,7 +729,7 @@ static int allocenv(char **envvar, const char *value, const int action,
   int rc = 0;
   size_t size = 0;
 
-  if(!*envvar || !flags)
+  if(!_stdout_ || !*envvar || !flags)
     goto done_label;
   else if(action == ADD_PATH && value && strlen(value) > 0)
     size = strlen(*envvar) + strlen(value) + strlen(":") + 1;
