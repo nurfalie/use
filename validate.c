@@ -17,7 +17,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
     }
 
   for(i = 0; i < argc; i++)
-    if(strcmp(argv[i], "-q") == 0)
+    if(argv[i] && strcmp(argv[i], "-q") == 0)
       {
 	flags->quiet = 1;
 	break;
