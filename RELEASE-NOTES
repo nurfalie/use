@@ -1,3 +1,8 @@
+1.11.1 (04/04/2014)
+
+1. Clear buffers before and after fgets().
+2. Test argv in validate().
+
 1.11.0 (03/20/2014)
 
 1. Inspect argv[].

@@ -103,18 +103,24 @@ int main(int argc, char *argv[])
 	}
       else
 	{
+	  (void) memset(line, 0, sizeof(line));
+
 	  while(fgets(line, (int) sizeof(line), fp))
-	    if(strstr(line, ".description") &&
-	       strstr(line, ":") && line[0] != '#')
-	      {
-		tmp = strstr(line, ":") + 1;
+	    {
+	      if(strstr(line, ".description") &&
+		 strstr(line, ":") && line[0] != '#')
+		{
+		  tmp = strstr(line, ":") + 1;
 
-		if(tmp && strlen(tmp) > 0 && tmp[strlen(tmp) - 1] == '\n')
-		  tmp[strlen(tmp) - 1] = 0;
+		  if(tmp && strlen(tmp) > 0 && tmp[strlen(tmp) - 1] == '\n')
+		    tmp[strlen(tmp) - 1] = 0;
 
-		if(tmp)
-		  (void) fprintf(_stdout_, "echo \"%s\"\n", tmp);
-	      }
+		  if(tmp)
+		    (void) fprintf(_stdout_, "echo \"%s\"\n", tmp);
+		}
+
+	      (void) memset(line, 0, sizeof(line));
+	    }
 
 	  (void) fclose(fp);
 	  fp = 0;
@@ -357,57 +363,62 @@ static int use(struct flags_struct *flags)
       for(i = flags->items_detached - 1; i >= 0; i--)
 	{
 	  found = 0;
+	  (void) memset(line, 0, sizeof(line));
 
 	  while(fgets(line, (int) sizeof(line), fp))
-	    if(strstr(line, ".description") &&
-	       strstr(line, ":") && line[0] != '#')
-	      {
-		product = line;
+	    {
+	      if(strstr(line, ".description") &&
+		 strstr(line, ":") && line[0] != '#')
+		{
+		  product = line;
 
-		if(strstr(product, ".") &&
-		   strlen(product) - strlen(strstr(product, ".")) > 0)
-		  {
-		    product[strlen(product) -
-			    strlen(strstr(product, "."))] = 0;
+		  if(strstr(product, ".") &&
+		     strlen(product) - strlen(strstr(product, ".")) > 0)
+		    {
+		      product[strlen(product) -
+			      strlen(strstr(product, "."))] = 0;
 
-		    if(strcmp(flags->detached[i], product) == 0)
-		      {
-			found = 1;
+		      if(strcmp(flags->detached[i], product) == 0)
+			{
+			  found = 1;
 
-			if(prepare(fp, product, flags, DELETE_PATH) != 0)
-			  {
-			    rc = 1;
+			  if(prepare(fp, product, flags, DELETE_PATH) != 0)
+			    {
+			      rc = 1;
 
-			    if(!flags->quiet)
-			      (void) fprintf
-				(_stdout_,
-				 "echo \"Error: unable to prepare "
-				 "containers for product %s.\"\n",
-				 product);
+			      if(!flags->quiet)
+				(void) fprintf
+				  (_stdout_,
+				   "echo \"Error: unable to prepare "
+				   "containers for product %s.\"\n",
+				   product);
 
-			    goto done_label;
-			  }
-			else if(!flags->quiet && !flags->pretend)
-			  (void) fprintf(_stdout_, "echo \"%s has been "
-					 "detached successfully.\"\n",
-					 product);
+			      goto done_label;
+			    }
+			  else if(!flags->quiet && !flags->pretend)
+			    (void) fprintf(_stdout_, "echo \"%s has been "
+					   "detached successfully.\"\n",
+					   product);
 
-			break;
-		      }
-		  }
-		else
-		  {
-		    rc = 1;
+			  break;
+			}
+		    }
+		  else
+		    {
+		      rc = 1;
 
-		    if(!flags->quiet)
-		      (void) fprintf(_stdout_,
-				     "echo \"Error: possible "
-				     "misconfiguration with %s.\"\n",
-				     USETABLE);
+		      if(!flags->quiet)
+			(void) fprintf(_stdout_,
+				       "echo \"Error: possible "
+				       "misconfiguration with %s.\"\n",
+				       USETABLE);
 
-		    break;
-		  }
-	      }
+		      break;
+		    }
+		}
+
+	      (void) memset(line, 0, sizeof(line));
+	    }
 
 	  if(found != 1 && !flags->quiet)
 	    (void) fprintf(_stdout_, "echo \"Warning: product %s "
@@ -420,57 +431,62 @@ static int use(struct flags_struct *flags)
       for(i = flags->items_used - 1; i >= 0; i--)
 	{
 	  found = 0;
+	  (void) memset(line, 0, sizeof(line));
 
 	  while(fgets(line, (int) sizeof(line), fp))
-	    if(strstr(line, ".description") &&
-	       strstr(line, ":") && line[0] != '#')
-	      {
-		product = line;
+	    {
+	      if(strstr(line, ".description") &&
+		 strstr(line, ":") && line[0] != '#')
+		{
+		  product = line;
 
-		if(strstr(product, ".") &&
-		   strlen(product) - strlen(strstr(product, ".")) > 0)
-		  {
-		    product[strlen(product) -
-			    strlen(strstr(product, "."))] = 0;
+		  if(strstr(product, ".") &&
+		     strlen(product) - strlen(strstr(product, ".")) > 0)
+		    {
+		      product[strlen(product) -
+			      strlen(strstr(product, "."))] = 0;
 
-		    if(strcmp(flags->used[i], product) == 0)
-		      {
-			found = 1;
+		      if(strcmp(flags->used[i], product) == 0)
+			{
+			  found = 1;
 
-			if(prepare(fp, product, flags, ADD_PATH) != 0)
-			  {
-			    rc = 1;
+			  if(prepare(fp, product, flags, ADD_PATH) != 0)
+			    {
+			      rc = 1;
 
-			    if(!flags->quiet)
-			      (void) fprintf
-				(_stdout_,
-				 "echo \"Error: unable to prepare "
-				 "containers for product %s.\"\n",
-				 product);
+			      if(!flags->quiet)
+				(void) fprintf
+				  (_stdout_,
+				   "echo \"Error: unable to prepare "
+				   "containers for product %s.\"\n",
+				   product);
 
-			    goto done_label;
-			  }
-			else if(!flags->quiet && !flags->pretend)
-			  (void) fprintf(_stdout_, "echo \"%s has been "
-					 "accessed successfully.\"\n",
-					 product);
+			      goto done_label;
+			    }
+			  else if(!flags->quiet && !flags->pretend)
+			    (void) fprintf(_stdout_, "echo \"%s has been "
+					   "accessed successfully.\"\n",
+					   product);
 
-			break;
-		      }
-		  }
-		else
-		  {
-		    rc = 1;
+			  break;
+			}
+		    }
+		  else
+		    {
+		      rc = 1;
 
-		    if(!flags->quiet)
-		      (void) fprintf(_stdout_,
-				     "echo \"Error: possible "
-				     "misconfiguration with %s.\"\n",
-				     USETABLE);
+		      if(!flags->quiet)
+			(void) fprintf(_stdout_,
+				       "echo \"Error: possible "
+				       "misconfiguration with %s.\"\n",
+				       USETABLE);
 
-		    break;
-		  }
-	      }
+		      break;
+		    }
+		}
+
+	      (void) memset(line, 0, sizeof(line));
+	    }
 
 	  if(found != 1 && !flags->quiet)
 	    (void) fprintf(_stdout_, "echo \"Warning: product %s "
@@ -598,40 +614,47 @@ static int prepare(FILE *fp, const char *product,
       return rc;
     }
 
+  (void) memset(line, 0, sizeof(line));
+
   while(fgets(line, (int) sizeof(line), fp))
-    if(strncmp(line, product, strlen(product)) == 0 && strstr(line, ":"))
-      {
-	if(strtok_r(line, ".", &lasts))
-	  variable = strtok_r(0, ":", &lasts);
+    {
+      if(strncmp(line, product, strlen(product)) == 0 && strstr(line, ":"))
+	{
+	  if(strtok_r(line, ".", &lasts))
+	    variable = strtok_r(0, ":", &lasts);
 
-	if(!(value = strtok_r(0, ":", &lasts)))
-	  value = "";
+	  if(!(value = strtok_r(0, ":", &lasts)))
+	    value = "";
 
-	do
-	  {
-	    if(value && strlen(value) > 0 && value[strlen(value) - 1] == '\n')
-	      value[strlen(value) - 1] = 0;
+	  do
+	    {
+	      if(value && strlen(value) > 0 &&
+		 value[strlen(value) - 1] == '\n')
+		value[strlen(value) - 1] = 0;
 
 #ifdef DEBUG
-	    if(value && variable)
-	      (void) fprintf(stderr, "%s=%s\n", variable, value);
+	      if(value && variable)
+		(void) fprintf(stderr, "%s=%s\n", variable, value);
 #endif
 
-	    if(updatevariable(variable, value, flags, action) != 0)
-	      {
-		rc = 1;
-		break;
-	      }
+	      if(updatevariable(variable, value, flags, action) != 0)
+		{
+		  rc = 1;
+		  break;
+		}
 
-	    value = strtok_r(0, ":", &lasts);
-	  }
-	while(rc == 0 && value);
+	      value = strtok_r(0, ":", &lasts);
+	    }
+	  while(rc == 0 && value);
 
-	if(rc != 0)
-	  break;
-      }
-    else
-      break;
+	  if(rc != 0)
+	    break;
+	}
+      else
+	break;
+
+      (void) memset(line, 0, sizeof(line));
+    }
 
   return rc;
 }

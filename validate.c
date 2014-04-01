@@ -10,7 +10,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
   int i = 0;
   int rc = 0;
 
-  if(!_stdout_ || !flags)
+  if(!_stdout_ || !argv || !flags)
     {
       rc = 1;
       return rc;
