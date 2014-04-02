@@ -65,10 +65,12 @@ int main(int argc, char *argv[])
 
   if(!(_stdout_ = fopen(filename, "a+")))
     {
-      (void) fprintf(stdout, "%s", "/dev/null");
+      if(stdout)
+	(void) fprintf(stdout, "%s", "/dev/null");
+
       return EXIT_FAILURE;
     }
-  else
+  else if(stdout)
     (void) fprintf(stdout, "%s", filename);
 
   (void) setvbuf(_stdout_, 0, _IONBF, (size_t) 0);
@@ -223,11 +225,8 @@ static int use(struct flags_struct *flags)
 	  (void) memset(PATH, 0, size);
 	}
 
-      if(PATH)
-	{
-	  if(tmp)
-	    (void) strncpy(PATH, tmp, size - 1);
-	}
+      if(PATH && tmp)
+	(void) strncpy(PATH, tmp, size - 1);
       else
 	{
 	  rc = 1;
@@ -235,7 +234,7 @@ static int use(struct flags_struct *flags)
 	  if(!flags->quiet)
 	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate "
-			   "memory for PATH.\"\n");
+			   "memory for PATH or tmp is empty.\"\n");
 
 	  goto done_label;
 	}
@@ -259,11 +258,8 @@ static int use(struct flags_struct *flags)
 	  (void) memset(MANPATH, 0, size);
 	}
 
-      if(MANPATH)
-	{
-	  if(tmp)
-	    (void) strncpy(MANPATH, tmp, size - 1);
-	}
+      if(MANPATH && tmp)
+	(void) strncpy(MANPATH, tmp, size - 1);
       else if(size > 0)
 	{
 	  rc = 1;
@@ -271,7 +267,7 @@ static int use(struct flags_struct *flags)
 	  if(!flags->quiet)
 	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate "
-			   "memory for MANPATH.\"\n");
+			   "memory for MANPATH or tmp is empty.\"\n");
 
 	  goto done_label;
 	}
@@ -296,11 +292,8 @@ static int use(struct flags_struct *flags)
 	  (void) memset(LD_LIBRARY_PATH, 0, size);
 	}
 
-      if(LD_LIBRARY_PATH)
-	{
-	  if(tmp)
-	    (void) strncpy(LD_LIBRARY_PATH, tmp, size - 1);
-	}
+      if(LD_LIBRARY_PATH && tmp)
+	(void) strncpy(LD_LIBRARY_PATH, tmp, size - 1);
       else if(size > 0)
 	{
 	  rc = 1;
@@ -308,7 +301,7 @@ static int use(struct flags_struct *flags)
 	  if(!flags->quiet)
 	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate memory for "
-			   "LD_LIBRARY_PATH.\"\n");
+			   "LD_LIBRARY_PATH or tmp is empty.\"\n");
 
 	  goto done_label;
 	}
@@ -334,11 +327,8 @@ static int use(struct flags_struct *flags)
 	  (void) memset(XFILESEARCHPATH, 0, size);
 	}
 
-      if(XFILESEARCHPATH)
-	{
-	  if(tmp)
-	    (void) strncpy(XFILESEARCHPATH, tmp, size - 1);
-	}
+      if(XFILESEARCHPATH && tmp)
+	(void) strncpy(XFILESEARCHPATH, tmp, size - 1);
       else if(size > 0)
 	{
 	  rc = 1;
@@ -346,7 +336,7 @@ static int use(struct flags_struct *flags)
 	  if(!flags->quiet)
 	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate memory for "
-			   "XFILESEARCHPATH.\"\n");
+			   "XFILESEARCHPATH or tmp is empty.\"\n");
 
 	  goto done_label;
 	}
