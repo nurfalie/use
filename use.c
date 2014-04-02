@@ -681,13 +681,13 @@ static int updatevariable(const char *variable, const char *value,
       ** Update the sourced file.
       */
 
+      (void) memset(envact, 0, sizeof(envact));
+
       if(action == ADD_PATH)
 	{
 	  if(validatePath(value, flags) != 0)
 	    (void) fprintf(_stdout_, "echo \"Warning: %s "
 			   "is not a valid path.\"\n", value);
-
-	  (void) memset(envact, 0, sizeof(envact));
 
 	  if(flags->shell_type == SH)
 	    (void) snprintf(envact, sizeof(envact), "export %s=%s",
@@ -707,8 +707,6 @@ static int updatevariable(const char *variable, const char *value,
 	}
       else
 	{
-	  (void) memset(envact, 0, sizeof(envact));
-
 	  if(flags->shell_type == SH)
 	    (void) snprintf(envact, sizeof(envact), "unset %s", variable);
 	  else if(flags->shell_type == CSH)
