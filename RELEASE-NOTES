@@ -1,4 +1,4 @@
-1.11.2 (04/11/2014)
+1.11.2 (04/09/2014)
 
 1. Shell scripts should not exit as terminals shall be closed.
 
