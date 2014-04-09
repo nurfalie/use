@@ -1,3 +1,7 @@
+1.11.2 (04/11/2014)
+
+1. Shell scripts should not exit as terminals shall be closed.
+
 1.11.1 (04/04/2014)
 
 1. Clear buffers before and after fgets().
