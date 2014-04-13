@@ -6,7 +6,7 @@ INCLUDES	= flags.h \
 		  use.h \
 		  use_tmp.h
 INCLUDE_PATH	= -I. -I/usr/include
-LIBS		= -lc -lm
+LIBS		=
 SRC		= use.c validate.c
 
 all:	Makefile.tmp $(INCLUDES) $(SRC)
