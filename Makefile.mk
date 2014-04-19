@@ -1,7 +1,8 @@
 -include ./Makefile.tmp
 CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
-		  -Wstack-protector \
-		  -fPIE -fstack-protector-all -pedantic
+		  -Wpointer-arith -Wstack-protector \
+                  -Wstrict-overflow=5 -Wstrict-prototypes \
+                  -fPIE -fstack-protector-all -pedantic -pie
 INCLUDES	= flags.h \
 		  use.h \
 		  use_tmp.h
