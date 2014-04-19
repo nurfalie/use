@@ -2,7 +2,7 @@
 CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
 		  -Wpointer-arith -Wstack-protector \
                   -Wstrict-overflow=5 -Wstrict-prototypes \
-                  -fPIE -fstack-protector-all -pedantic -pie
+                  -fPIE -fstack-protector-all -pedantic
 INCLUDES	= flags.h \
 		  use.h \
 		  use_tmp.h
