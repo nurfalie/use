@@ -1,5 +1,5 @@
 -include ./Makefile.tmp
-CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat \
+CC_OPTIONS	= -Wall -Wconversion -Werror -Wextra -Wformat=2 \
 		  -Wpointer-arith -Wstack-protector \
                   -Wstrict-overflow=5 -Wstrict-prototypes \
                   -fPIE -fstack-protector-all -pedantic
