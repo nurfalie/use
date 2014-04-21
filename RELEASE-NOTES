@@ -1,7 +1,8 @@
-1.11.2 (04/22/2014)
+1.11.3 (04/22/2014)
 
 1. Compiler flags.
-2. Version remains at 1.11.2.
+2. Environment variables that are not defined are not properly initialized.
+   Corrected.
 
 1.11.2 (04/18/2014)
 

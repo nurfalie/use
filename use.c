@@ -740,12 +740,26 @@ static int allocenv(char **envvar, const char *value, const int action,
   int rc = 0;
   size_t size = 0;
 
-  if(!_stdout_ || !*envvar || !flags)
+  if(!_stdout_ || !flags)
     goto done_label;
-  else if(action == ADD_PATH && value && strlen(value) > 0)
-    size = strlen(*envvar) + strlen(value) + strlen(":") + 1;
+  else if(action == ADD_PATH)
+    {
+      if(*envvar && value && strlen(value) > 0)
+	size = strlen(*envvar) + strlen(value) + strlen(":") + 1;
+      else if(value && strlen(value) > 0)
+	size = strlen(value) + strlen(":") + 1;
+    }
   else
-    size = strlen(*envvar) + 1;
+    {
+      if(*envvar)
+	size = strlen(*envvar) + 1;
+      else
+	/*
+	** Not an error.
+	*/
+
+	goto done_label;
+    }
 
   if(size == 0)
     {
