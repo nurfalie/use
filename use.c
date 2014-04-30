@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
     }
   else if(flags.about)
     {
-      (void) fprintf(_stdout_, "%s", "echo \"USE\"\n");
+      (void) fprintf(_stdout_, "%s", "echo \"use\"\n");
       (void) fprintf(_stdout_, "echo \"Version: %s\"\n", VERSION);
       (void) fprintf(_stdout_, "echo \"Compilation Date & Time: %s %s\"\n",
 		     __DATE__, __TIME__);
