@@ -74,9 +74,6 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	}
       else if(strcmp(*argv, "-l") == 0)
 	{
-	  if(argc > 4)
-	    rc = 1;
-
 	  flags->list = 1;
 	}
       else if(strcmp(*argv, "-n") == 0)
