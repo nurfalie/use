@@ -1,3 +1,8 @@
+1.11.4 (05/03/2014)
+
+1. Added support for DYLD_LIBRARY_PATH on OS X.
+2. Added the t command-line option, allowing for alternate use tables.
+
 1.11.3 (04/21/2014)
 
 1. Compiler flags.

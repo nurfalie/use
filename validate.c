@@ -93,7 +93,11 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	    flags->no_path = 1;
 	  else if(strcmp(*argv, "MANPATH") == 0)
 	    flags->no_manpath = 1;
+#if defined(__APPLE__) || defined(__MACH__)
+	  else if(strcmp(*argv, "DYLD_LIBRARY_PATH") == 0)
+#else
 	  else if(strcmp(*argv, "LD_LIBRARY_PATH") == 0)
+#endif
 	    flags->no_ld_library_path = 1;
 	  else if(strcmp(*argv, "XFILESEARCHPATH") == 0)
 	    flags->no_xfilesearchpath = 1;
@@ -142,6 +146,25 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 	      if(!flags->quiet)
 		(void) fprintf(_stdout_, "echo \"Error: unknown shell "
 			       "type %s.\"\n", *argv);
+	    }
+	}
+      else if(strcmp(*argv, "-t") == 0)
+	{
+	  argv++;
+
+	  if(*argv == 0)
+	    {
+	      rc = 1;
+	      break;
+	    }
+
+	  if((_usefp_ = fopen(*argv, "r")) == 0)
+	    {
+	      rc = 1;
+
+	      if(!flags->quiet)
+		(void) fprintf(_stdout_,
+			       "echo \"Error: %s cannot be accessed.", *argv);
 	    }
 	}
       else if(strcmp(*argv, "-u") == 0)
@@ -198,6 +221,15 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
     }
   else if(flags->items_used == 0 && flags->items_detached == 0)
     rc = 1;
+
+  if(rc != 0)
+    {
+      if(_usefp_)
+	{
+	  fclose(_usefp_);
+	  _usefp_ = 0;
+	}
+    }
 
   return rc;
 }

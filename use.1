@@ -1,4 +1,4 @@
-.TH use 1 "November 02, 2007"
+.TH use 1 "May 02, 2014"
 .SH NAME
 use
 .SH SYNOPSIS
@@ -7,7 +7,7 @@ use
 .B use
 is a tool that allows a user to modify a
 shell's environment variables in accordance to defined products.
-It currently modifies LD_LIBRARY_PATH, MANPATH, PATH, XFILESEARCHPATH, and any other
+It currently modifies DYLD_LIBRARY_PATH, LD_LIBRARY_PATH, MANPATH, PATH, XFILESEARCHPATH, and any other
 variable that is defined in the use.table file.
 .SH OPTIONS
 .IP "-a"
@@ -20,7 +20,7 @@ use.table file for the given product.
 List all known products stored in use.table.
 .IP "-n variable"
 Prevent use from modifying the environment variable variable. Current supported variables
-are LD_LIBRARY_PATH, MANPATH, PATH, and XFILESEARCHPATH.
+are DYLD_LIBRARY_PATH, LD_LIBRARY_PATH, MANPATH, PATH, and XFILESEARCHPATH.
 .IP "-p"
 Pretend mode. Show the changes without executing them. This option supersedes the -q option.
 .IP "-q"
@@ -29,6 +29,8 @@ Quiet mode. Also, all errors and warnings will be suppressed. This option does n
 Set the shell type. Valid shells are: SH, CSH, KSH, BASH, TCSH.
 This option is not really necessary as the use alias, if configured properly,
 passes this value to the use.bin executable.
+.IP "-t table"
+Use the table table instead of the official use.table table.
 .IP "-u product"
 This option uses the given product. The current shell's environment variables
 are modified to reference the paths defined in use.table for the given product.

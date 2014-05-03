@@ -23,8 +23,9 @@
 
 char filename[PATH_MAX];
 FILE *_stdout_;
+FILE *_usefp_;
 
-#define VERSION "1.11.3"
+#define VERSION "1.11.4"
 
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1

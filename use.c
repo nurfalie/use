@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
     (void) fprintf(stdout, "%s", filename);
 
   (void) setvbuf(_stdout_, 0, _IONBF, (size_t) 0);
+  _usefp_ = 0;
 
   /*
   ** Reset the structure.
@@ -97,7 +98,7 @@ int main(int argc, char *argv[])
 
   if(flags.list)
     {
-      if(!(fp = fopen(USETABLE, "r")))
+      if(_usefp_ == 0 && !(fp = fopen(USETABLE, "r")))
 	{
 	  rc = 1;
 	  (void) fprintf(_stdout_, "echo \"Error: unable to open %s.\"",
@@ -105,6 +106,9 @@ int main(int argc, char *argv[])
 	}
       else
 	{
+	  if(_usefp_)
+	    fp = _usefp_;
+
 	  (void) memset(line, 0, sizeof(line));
 
 	  while(fgets(line, (int) sizeof(line), fp))
@@ -195,7 +199,11 @@ static int use(struct flags_struct *flags)
   char *stdvalues[4]; /* This should be the same size as stdvariables. */
   char *stdvariables[] = {"PATH",
 			  "MANPATH",
+#if defined(__APPLE__) || defined(__MACH__)
+			  "DYLD_LIBRARY_PATH",
+#else
 			  "LD_LIBRARY_PATH",
+#endif
 			  "XFILESEARCHPATH"};
   char *tmp = 0;
   int dousevalues[4]; /* This must be the same size as stdvariables. */
@@ -278,7 +286,11 @@ static int use(struct flags_struct *flags)
 
   if(flags->no_ld_library_path == 0)
     {
+#if defined(__APPLE__) || defined(__MACH__)
+      if((tmp = getenv("DYLD_LIBRARY_PATH")))
+#else
       if((tmp = getenv("LD_LIBRARY_PATH")))
+#endif
 	size = strlen(tmp) + 1;
       else
 	size = 0;
@@ -299,17 +311,29 @@ static int use(struct flags_struct *flags)
 	  rc = 1;
 
 	  if(!flags->quiet)
+#if defined(__APPLE__) || defined(__MACH__)
+	    (void) fprintf(_stdout_, "%s",
+			   "echo \"Error: unable to allocate memory for "
+			   "DYLD_LIBRARY_PATH or tmp is empty.\"\n");
+#else
 	    (void) fprintf(_stdout_, "%s",
 			   "echo \"Error: unable to allocate memory for "
 			   "LD_LIBRARY_PATH or tmp is empty.\"\n");
+#endif
 
 	  goto done_label;
 	}
     }
   else if(!flags->quiet)
+#if defined(__APPLE__) || defined(__MACH__)
+    (void) fprintf(_stdout_, "%s",
+		   "echo \"Warning: DYLD_LIBRARY_PATH not "
+		   "updated.\"\n");
+#else
     (void) fprintf(_stdout_, "%s",
 		   "echo \"Warning: LD_LIBRARY_PATH not "
 		   "updated.\"\n");
+#endif
 
   if(flags->no_xfilesearchpath == 0)
     {
@@ -346,7 +370,12 @@ static int use(struct flags_struct *flags)
 		   "echo \"Warning: XFILESEARCHPATH not "
 		   "updated.\"\n");
 
-  if((fp = fopen(USETABLE, "r")))
+  if(_usefp_)
+    fp = _usefp_;
+  else
+    fp = fopen(USETABLE, "r");
+
+  if(fp)
     {
       int found = 0;
 
@@ -665,7 +694,11 @@ static int updatevariable(const char *variable, const char *value,
       if(flags->no_manpath == 0)
 	rc = allocenv(&MANPATH, value, action, flags);
     }
+#if defined(__APPLE__) || defined(__MACH__)
+  else if(strcmp(variable, "DYLD_LIBRARY_PATH") == 0)
+#else
   else if(strcmp(variable, "LD_LIBRARY_PATH") == 0)
+#endif
     {
       if(flags->no_ld_library_path == 0)
 	rc = allocenv(&LD_LIBRARY_PATH, value, action, flags);
