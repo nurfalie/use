@@ -104,7 +104,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 
 	      if(!flags->quiet)
 		(void) fprintf(_stdout_,
-			       "echo \"Error: %s is an unrecognized "
+			       "echo \"Error: %s is not a recognized "
 			       "environment variable.\"\n",
 			       *argv);
 	    }
