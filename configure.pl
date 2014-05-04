@@ -103,7 +103,7 @@ $bindir = $val;
 
 # Determine the location of the manual page.
 
-$val = $mandir = "/usr/local/man/man1";
+$val = $mandir = "/usr/share/man/man1";
 
 do
 {

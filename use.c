@@ -427,10 +427,19 @@ static int use(struct flags_struct *flags)
 		      rc = 1;
 
 		      if(!flags->quiet)
-			(void) fprintf(_stdout_,
-				       "echo \"Error: possible "
-				       "misconfiguration with %s.\"\n",
-				       USETABLE);
+			{
+			  if(_usefp_)
+			    (void) fprintf(_stdout_,
+					   "%s",
+					   "echo \"Error: possible "
+					   "misconfiguration with the "
+					   "provided table file.\"\n");
+			  else
+			    (void) fprintf(_stdout_,
+					   "echo \"Error: possible "
+					   "misconfiguration with %s.\"\n",
+					   USETABLE);
+			}
 
 		      break;
 		    }
@@ -495,10 +504,19 @@ static int use(struct flags_struct *flags)
 		      rc = 1;
 
 		      if(!flags->quiet)
-			(void) fprintf(_stdout_,
-				       "echo \"Error: possible "
-				       "misconfiguration with %s.\"\n",
-				       USETABLE);
+			{
+			  if(_usefp_)
+			    (void) fprintf(_stdout_,
+					   "%s",
+					   "echo \"Error: possible "
+					   "misconfiguration with "
+					   "the provided table file.\"\n");
+			  else
+			    (void) fprintf(_stdout_,
+					   "echo \"Error: possible "
+					   "misconfiguration with %s.\"\n",
+					   USETABLE);
+			}
 
 		      break;
 		    }
@@ -519,8 +537,15 @@ static int use(struct flags_struct *flags)
       rc = 1;
 
       if(!flags->quiet)
-	(void) fprintf(_stdout_, "echo \"Error: unable to "
-		       "open %s.\"\n", USETABLE);
+	{
+	  if(_usefp_)
+	    (void) fprintf(_stdout_, "%s",
+			   "echo \"Error: unable to "
+			   "open the provided table file.\"\n");
+	  else
+	    (void) fprintf(_stdout_, "echo \"Error: unable to "
+			   "open %s.\"\n", USETABLE);
+	}
     }
 
  done_label:
