@@ -15,7 +15,7 @@ Display information about use.
 .IP "-d product"
 This option detaches the given product. In other words, the environment
 variables of the current shell no longer reference the paths defined in the
-use.table file for the given product. Please note that products are detached according to their provided order.
+use.table file for the given product. Please note that products are detached in the reverse of the specified order.
 .IP "-l"
 List all known products stored in use.table.
 .IP "-n variable"
@@ -33,7 +33,7 @@ passes this value to the use.bin executable.
 Use the table table instead of the official use.table table.
 .IP "-u product"
 This option uses the given product. The current shell's environment variables
-are modified to reference the paths defined in use.table for the given product. Please note that products are applied according to their provided order.
+are modified to reference the paths defined in use.table for the given product. Please note that products are applied in the reverse of the specified order.
 .SH FILES
 .B /usr/local/share/use.table
 .B /usr/local/bin/use.sh
