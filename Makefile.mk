@@ -19,7 +19,7 @@ clean:
 	rm -f core use.bin use.core
 
 debug:
-	$(MAKE) -e DEBUG=-DDEBUG
+	$(MAKE) -e DEBUG="-DDEBUG -g"
 
 distclean: clean purge
 	rm -f Makefile.tmp use_tmp.h
