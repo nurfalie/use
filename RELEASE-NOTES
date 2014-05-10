@@ -1,7 +1,7 @@
 1.11.5 (05/10/2014)
 
-1. Added g flag to debug builds.
-2. Changed default manual location to /usr/share/man/man1 in configure.pl.
+1. Added the g flag to debug builds.
+2. Changed the default manual location to /usr/share/man/man1 in configure.pl.
 3. Improved error messages.
 4. Modified the manual page, informing the user that product order is
    important.
