@@ -1,3 +1,7 @@
+1.11.6 (06/15/2014)
+
+1. Use %ld specifier for pid_t and uid_t in snprintf().
+
 1.11.5 (05/10/2014)
 
 1. Added the g flag to debug builds.

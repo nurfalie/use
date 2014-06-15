@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
 
   (void) memset(filename, 0, sizeof(filename));
   (void) snprintf
-    (filename, sizeof(filename), "%s/.use.sourceme.%lu.%lu",
-     TEMPDIR, (unsigned long) getuid(), (unsigned long) getpid());
+    (filename, sizeof(filename), "%s/.use.sourceme.%ld.%ld",
+     TEMPDIR, (long) getuid(), (long) getpid());
 
   if(!(_stdout_ = fopen(filename, "a+")))
     {
