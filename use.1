@@ -1,4 +1,4 @@
-.TH use 1 "May 04, 2014"
+.TH use 1 "June 18, 2014"
 .SH NAME
 use
 .SH SYNOPSIS
@@ -13,38 +13,38 @@ variable that is defined in the use.table file.
 .IP "-a"
 Display information about use.
 .IP "-d product"
-This option detaches the given product. In other words, the environment
-variables of the current shell no longer reference the paths defined in the
-use.table file for the given product. Please note that products are detached in the reverse of the specified order.
+This option detaches the given product. That is, the environment
+variables of the current shell will not reference the paths defined in the
+use.table file for the given product. Please note that products are detached in a last-in-first-out order.
 .IP "-l"
 List all known products stored in use.table.
 .IP "-n variable"
 Prevent use from modifying the environment variable variable. Current supported variables
 are DYLD_LIBRARY_PATH, LD_LIBRARY_PATH, MANPATH, PATH, and XFILESEARCHPATH.
 .IP "-p"
-Pretend mode. Show the changes without executing them. This option supersedes the -q option.
+Pretend mode, that is, show potential changes. This option supersedes the -q option.
 .IP "-q"
 Quiet mode. Also, all errors and warnings will be suppressed. This option does not interfere with the -p option.
 .IP "-s type"
-Set the shell type. Valid shells are: SH, CSH, KSH, BASH, TCSH.
-This option is not really necessary as the use alias, if configured properly,
-passes this value to the use.bin executable.
+Set the shell type. Valid shells are: BASH, CSH, KSH, SH, and TCSH.
+This option is not necessary as the use alias, if configured properly,
+passes the shell type to the use.bin executable.
 .IP "-t table"
 Use the table table instead of the official use.table table.
 .IP "-u product"
 This option uses the given product. The current shell's environment variables
-are modified to reference the paths defined in use.table for the given product. Please note that products are applied in the reverse of the specified order.
+are modified to reference the paths defined in use.table for the given product. Please note that products are applied in a last-in-first-out order.
 .SH FILES
-.B /usr/local/share/use.table
-.B /usr/local/bin/use.sh
+.B /usr/local/bin/use.bash
+.B /usr/local/bin/use.bin
 .B /usr/local/bin/use.csh
 .B /usr/local/bin/use.ksh
-.B /usr/local/bin/use.bash
+.B /usr/local/bin/use.sh
 .B /usr/local/bin/use.tcsh
-.B /usr/local/bin/use.bin
+.B /usr/local/share/use.table
 .SH NOTES
 Use will issue a warning for a product that is not located in the use.table file. It will also issue a warning if a product references a nonexistent path.
-You will need to create a use alias for each shell that you intend to use. See the
+You will need to create a use alias for each shell that you intend to use. Please see the
 ALIAS EXAMPLE(S) section for more information.
 .SH ALIAS EXAMPLE(S)
 .IP "bash:"

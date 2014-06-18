@@ -1,3 +1,8 @@
+1.11.6 (06/18/2014)
+
+1. Modified the manual.
+2. Version remains at 1.11.6.
+
 1.11.6 (06/15/2014)
 
 1. Use %ld specifier for pid_t and uid_t in snprintf().
