@@ -7,11 +7,13 @@
 
 #include <errno.h>
 #include <limits.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 /*
@@ -21,11 +23,12 @@
 #include "flags.h"
 #include "use_tmp.h"
 
+char TEMPDIR[PATH_MAX];
 char filename[PATH_MAX];
 FILE *_stdout_;
 FILE *_usefp_;
 
-#define VERSION "1.11.6"
+#define VERSION "1.11.7"
 
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1

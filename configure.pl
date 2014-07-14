@@ -35,35 +35,10 @@ while(! -d $val);
 
 $usetabledir = $val . "/use.table";
 
-# Determine the temporary directory.
-
-$val = $tmpdir = "/tmp";
-
-do
-{
-    printf("What is the temporary directory? [%s] ", $tmpdir);
-    chop($val = <STDIN>);
-
-    if(!$val)
-    {
-	$val = $tmpdir;
-    }
-
-    if(! -d $val)
-    {
-	printf("\"%s\" doesn't appear to exist or is an invalid " .
-	       "directory.\n", $val);
-    }
-}
-while(! -d $val);
-
-$tmpdir = $val;
-
 # Create use_temp.h in the current directory.
 
 $use_tmp = "#ifndef _use_temp_h_\n" .
     "#define _use_temp_h_\n" .
-    "#define TEMPDIR \"" . $tmpdir . "\"\n" .
     "#define USETABLE \"" . $usetabledir . "\"\n" .
     "#endif\n";
 
@@ -138,6 +113,6 @@ if(!open(OUTPUT, "+> ./Makefile.tmp"))
 }
 
 print OUTPUT $mktmp;
-printf("Please don't forget to set the correct privileges after " .
+printf("Please do not forget to set the correct privileges after " .
        "installing the files!\n");
 close(OUTPUT);

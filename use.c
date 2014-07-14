@@ -57,6 +57,14 @@ int main(int argc, char *argv[])
   char *tmp = 0;
   int rc = 0;
   struct flags_struct flags;
+  struct passwd *pw = getpwuid(getuid());
+
+  (void) memset(TEMPDIR, 0, sizeof(TEMPDIR));
+
+  if(pw && pw->pw_dir)
+    (void) snprintf(TEMPDIR, sizeof(TEMPDIR), "%s", pw->pw_dir);
+  else
+    (void) snprintf(TEMPDIR, sizeof(TEMPDIR), "%s", "/tmp");
 
   (void) memset(filename, 0, sizeof(filename));
   (void) snprintf

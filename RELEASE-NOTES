@@ -1,3 +1,8 @@
+1.11.7 (07/18/2014)
+
+1. The user's home will now be used to house temporary files. If a home
+   is not available, /tmp will be used.
+
 1.11.6 (06/18/2014)
 
 1. Modified the manual.
