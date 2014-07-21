@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
   char filename[PATH_MAX];
   char line[MAX_LINE_LENGTH];
   char *tmp = 0;
+  int fd = -1;
   int rc = 0;
   struct flags_struct flags;
   struct passwd *pw = getpwuid(getuid());
@@ -68,13 +69,21 @@ int main(int argc, char *argv[])
 
   (void) memset(filename, 0, sizeof(filename));
   (void) snprintf
-    (filename, sizeof(filename), "%s/.use.sourceme.%ld.%ld",
+    (filename, sizeof(filename), "%s/.use.sourceme.%ld.%ldXXXXXX",
      TEMPDIR, (long) getuid(), (long) getpid());
 
-  if(!(_stdout_ = fopen(filename, "a+")))
+  if((fd = mkstemp(filename)) == -1)
     {
       if(stdout)
-	(void) fprintf(stdout, "%s", "/dev/null");
+	fprintf(stdout, "%s", "");
+
+      return EXIT_FAILURE;
+    }
+
+  if(!(_stdout_ = fdopen(fd, "a")))
+    {
+      if(stdout)
+	(void) fprintf(stdout, "%s", "");
 
       return EXIT_FAILURE;
     }
@@ -163,6 +172,11 @@ int main(int argc, char *argv[])
   if(_stdout_)
     {
       (void) fflush(_stdout_);
+
+      /*
+      ** Also closes fd.
+      */
+
       (void) fclose(_stdout_);
     }
 

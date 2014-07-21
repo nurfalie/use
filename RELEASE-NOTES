@@ -1,3 +1,10 @@
+1.11.8 (07/21/2014)
+
+1. Do not print /dev/null to standard output if fopen() fails. If use is executed with
+   elevated privileges, /dev/null may be removed.
+2. Open temporary files for appending instead of appending and reading.
+3. Use mkstemp() to create a temporary file.
+
 1.11.7 (07/16/2014)
 
 1. The user's home will now be used to house temporary files. If a home
