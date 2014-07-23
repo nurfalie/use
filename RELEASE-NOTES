@@ -1,7 +1,11 @@
+1.11.9 (07/23/2014)
+
+1. Temporary files must be open for reading.
+
 1.11.8 (07/21/2014)
 
-1. Do not print /dev/null to standard output if fopen() fails. If use is executed with
-   elevated privileges, /dev/null may be removed.
+1. Do not print /dev/null to standard output if fopen() fails.
+   If use is executed with elevated privileges, /dev/null may be removed.
 2. Open temporary files for appending instead of appending and reading.
 3. Use mkstemp() to create a temporary file.
 

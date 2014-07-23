@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  if(!(_stdout_ = fdopen(fd, "a")))
+  if(!(_stdout_ = fdopen(fd, "a+")))
     {
       if(stdout)
 	(void) fprintf(stdout, "%s", "");
