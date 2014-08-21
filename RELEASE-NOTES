@@ -1,6 +1,6 @@
 1.11.9 (07/23/2014)
 
-1. Temporary files must be open for reading.
+1. Temporary files must be opened for reading.
 
 1.11.8 (07/21/2014)
 
