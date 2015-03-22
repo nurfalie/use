@@ -30,7 +30,8 @@ static int used_exists(const struct flags_struct *flags,
   return -1;
 }
 
-int validate(const int argc, char *argv[],
+int validate(const int argc,
+	     char *argv[],
 	     struct flags_struct *flags)
 {
   int i = 0;
