@@ -1,6 +1,8 @@
 1.12.0 (03/22/2015)
 
 1. Cleaning.
+2. The function updateVariable() should produce an error
+   if _stdout_ or flags is not defined.
 
 1.11.9 (07/23/2014)
 

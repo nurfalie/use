@@ -111,16 +111,16 @@ int validate(const int argc,
 	      break;
 	    }
 
-	  if(strcmp(*argv, "PATH") == 0)
-	    flags->no_path = 1;
-	  else if(strcmp(*argv, "MANPATH") == 0)
-	    flags->no_manpath = 1;
 #if defined(__APPLE__) || defined(__MACH__)
-	  else if(strcmp(*argv, "DYLD_LIBRARY_PATH") == 0)
+	  if(strcmp(*argv, "DYLD_LIBRARY_PATH") == 0)
 #else
-	  else if(strcmp(*argv, "LD_LIBRARY_PATH") == 0)
+	  if(strcmp(*argv, "LD_LIBRARY_PATH") == 0)
 #endif
 	    flags->no_ld_library_path = 1;
+	  else if(strcmp(*argv, "MANPATH") == 0)
+	    flags->no_manpath = 1;
+	  else if(strcmp(*argv, "PATH") == 0)
+	    flags->no_path = 1;
 	  else if(strcmp(*argv, "XFILESEARCHPATH") == 0)
 	    flags->no_xfilesearchpath = 1;
 	  else
@@ -151,14 +151,14 @@ int validate(const int argc,
 	      break;
 	    }
 
-	  if(strcmp(*argv, "SH") == 0)
-	    flags->shell_type = SH;
+	  if(strcmp(*argv, "BASH") == 0)
+	    flags->shell_type = BASH;
 	  else if(strcmp(*argv, "CSH") == 0)
 	    flags->shell_type = CSH;
 	  else if(strcmp(*argv, "KSH") == 0)
 	    flags->shell_type = KSH;
-	  else if(strcmp(*argv, "BASH") == 0)
-	    flags->shell_type = BASH;
+	  else if(strcmp(*argv, "SH") == 0)
+	    flags->shell_type = SH;
 	  else if(strcmp(*argv, "TCSH") == 0)
 	    flags->shell_type = TCSH;
 	  else

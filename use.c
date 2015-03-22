@@ -737,6 +737,8 @@ static int updatevariable(const char *variable, const char *value,
 
   if(!_stdout_ || !flags || !value || !variable || strlen(variable) == 0)
     {
+      if(!_stdout_ || !flags)
+	rc = 1;
     }
 #if defined(__APPLE__) || defined(__MACH__)
   else if(strcmp(variable, "DYLD_LIBRARY_PATH") == 0)
