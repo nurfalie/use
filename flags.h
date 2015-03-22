@@ -1,5 +1,5 @@
-#ifndef _FLAGS_H_
-#define _FLAGS_H_
+#ifndef _USE_FLAGS_H_
+#define _USE_FLAGS_H_
 
 #define MAX_PRODUCTS 500
 #define MAX_PRODUCT_NAME_LENGTH 128

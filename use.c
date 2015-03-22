@@ -26,28 +26,27 @@
 */
 
 #include "use.h"
-
-/*
-** -- Local variables --
-*/
+#include "validate.h"
 
 static char *LD_LIBRARY_PATH = 0;
 static char *MANPATH = 0;
 static char *PATH = 0;
 static char *XFILESEARCHPATH = 0;
 
-/*
-** -- Local Functions --
-*/
-
-static int allocenv(char **, const char *, const int,
-		    const struct flags_struct *);
-static int prepare(FILE *, const char *, const struct flags_struct *,
-		   const int);
-static void reset(struct flags_struct *);
-static int updatevariable(const char *, const char *,
-			  const struct flags_struct *, const int);
-static int use(struct flags_struct *);
+static int allocenv(char **envvar,
+		    const char *value,
+		    const int action,
+		    const struct flags_struct *flags);
+static int prepare(FILE *fp,
+		   const char *product,
+		   const struct flags_struct *flags,
+		   const int action);
+static void reset(struct flags_struct *flags);
+static int updatevariable(const char *variable,
+			  const char *value,
+			  const struct flags_struct *flags,
+			  const int action);
+static int use(struct flags_struct *flags);
 
 int main(int argc, char *argv[])
 {
@@ -94,7 +93,7 @@ int main(int argc, char *argv[])
   _usefp_ = 0;
 
   /*
-  ** Reset the structure.
+  ** Reset the flags structure.
   */
 
   reset(&flags);
@@ -157,8 +156,8 @@ int main(int argc, char *argv[])
       (void) fprintf(_stdout_, "echo \"Version: %s\"\n", VERSION);
       (void) fprintf(_stdout_, "echo \"Compilation Date & Time: %s %s\"\n",
 		     __DATE__, __TIME__);
-      (void) fprintf(_stdout_, "echo \"Use Table: %s\"\n", USETABLE);
       (void) fprintf(_stdout_, "echo \"Temporary Directory: %s\"\n", TEMPDIR);
+      (void) fprintf(_stdout_, "echo \"Use Table: %s\"\n", USETABLE);
       goto done_label;
     }
 
@@ -218,15 +217,18 @@ static int use(struct flags_struct *flags)
   char envact[MAX_LINE_LENGTH];
   char line[MAX_LINE_LENGTH];
   char *product = 0;
-  char *stdvalues[4]; /* This should be the same size as stdvariables. */
-  char *stdvariables[] = {"PATH",
-			  "MANPATH",
+  char *stdvalues[4]; /* This must be the same size as stdvariables. */
+  char *stdvariables[] = 
+    {
 #if defined(__APPLE__) || defined(__MACH__)
-			  "DYLD_LIBRARY_PATH",
+      "DYLD_LIBRARY_PATH",
 #else
-			  "LD_LIBRARY_PATH",
+      "LD_LIBRARY_PATH",
 #endif
-			  "XFILESEARCHPATH"};
+      "MANPATH",
+      "PATH",
+      "XFILESEARCHPATH"
+    };
   char *tmp = 0;
   int dousevalues[4]; /* This must be the same size as stdvariables. */
   int i = 0;
@@ -238,73 +240,6 @@ static int use(struct flags_struct *flags)
       rc = 1;
       goto done_label;
     }
-
-  if(flags->no_path == 0)
-    {
-      if((tmp = getenv("PATH")))
-	size = strlen(tmp) + 1;
-      else
-	size = 0;
-
-      free(PATH);
-      PATH = 0;
-
-      if(size > 0)
-	{
-	  PATH = (char *) malloc(size);
-	  (void) memset(PATH, 0, size);
-	}
-
-      if(PATH && tmp)
-	(void) strncpy(PATH, tmp, size - 1);
-      else
-	{
-	  rc = 1;
-
-	  if(!flags->quiet)
-	    (void) fprintf(_stdout_, "%s",
-			   "echo \"Error: unable to allocate "
-			   "memory for PATH or tmp is empty.\"\n");
-
-	  goto done_label;
-	}
-    }
-  else if(!flags->quiet)
-    (void) fprintf(_stdout_, "%s", "echo \"Warning: PATH not updated.\"\n");
-
-  if(flags->no_manpath == 0)
-    {
-      if((tmp = getenv("MANPATH")))
-	size = strlen(tmp) + 1;
-      else
-	size = 0;
-
-      free(MANPATH);
-      MANPATH = 0;
-
-      if(size > 0)
-	{
-	  MANPATH = (char *) malloc(size);
-	  (void) memset(MANPATH, 0, size);
-	}
-
-      if(MANPATH && tmp)
-	(void) strncpy(MANPATH, tmp, size - 1);
-      else if(size > 0)
-	{
-	  rc = 1;
-
-	  if(!flags->quiet)
-	    (void) fprintf(_stdout_, "%s",
-			   "echo \"Error: unable to allocate "
-			   "memory for MANPATH or tmp is empty.\"\n");
-
-	  goto done_label;
-	}
-    }
-  else if(!flags->quiet)
-    (void) fprintf(_stdout_, "%s",
-		   "echo \"Warning: MANPATH not updated.\"\n");
 
   if(flags->no_ld_library_path == 0)
     {
@@ -356,6 +291,73 @@ static int use(struct flags_struct *flags)
 		   "echo \"Warning: LD_LIBRARY_PATH not "
 		   "updated.\"\n");
 #endif
+
+  if(flags->no_manpath == 0)
+    {
+      if((tmp = getenv("MANPATH")))
+	size = strlen(tmp) + 1;
+      else
+	size = 0;
+
+      free(MANPATH);
+      MANPATH = 0;
+
+      if(size > 0)
+	{
+	  MANPATH = (char *) malloc(size);
+	  (void) memset(MANPATH, 0, size);
+	}
+
+      if(MANPATH && tmp)
+	(void) strncpy(MANPATH, tmp, size - 1);
+      else if(size > 0)
+	{
+	  rc = 1;
+
+	  if(!flags->quiet)
+	    (void) fprintf(_stdout_, "%s",
+			   "echo \"Error: unable to allocate "
+			   "memory for MANPATH or tmp is empty.\"\n");
+
+	  goto done_label;
+	}
+    }
+  else if(!flags->quiet)
+    (void) fprintf(_stdout_, "%s",
+		   "echo \"Warning: MANPATH not updated.\"\n");
+
+  if(flags->no_path == 0)
+    {
+      if((tmp = getenv("PATH")))
+	size = strlen(tmp) + 1;
+      else
+	size = 0;
+
+      free(PATH);
+      PATH = 0;
+
+      if(size > 0)
+	{
+	  PATH = (char *) malloc(size);
+	  (void) memset(PATH, 0, size);
+	}
+
+      if(PATH && tmp)
+	(void) strncpy(PATH, tmp, size - 1);
+      else
+	{
+	  rc = 1;
+
+	  if(!flags->quiet)
+	    (void) fprintf(_stdout_, "%s",
+			   "echo \"Error: unable to allocate "
+			   "memory for PATH or tmp is empty.\"\n");
+
+	  goto done_label;
+	}
+    }
+  else if(!flags->quiet)
+    (void) fprintf(_stdout_, "%s", "echo \"Warning: PATH not updated.\"\n");
 
   if(flags->no_xfilesearchpath == 0)
     {
@@ -431,7 +433,8 @@ static int use(struct flags_struct *flags)
 				(void) fprintf
 				  (_stdout_,
 				   "echo \"Error: unable to prepare "
-				   "containers for product %s.\"\n",
+				   "containers for product %s. Please "
+				   "review the use file.\"\n",
 				   product);
 
 			      goto done_label;
@@ -454,8 +457,8 @@ static int use(struct flags_struct *flags)
 			    (void) fprintf(_stdout_,
 					   "%s",
 					   "echo \"Error: possible "
-					   "misconfiguration with the "
-					   "provided table file.\"\n");
+					   "misconfiguration with "
+					   "the provided table file.\"\n");
 			  else
 			    (void) fprintf(_stdout_,
 					   "echo \"Error: possible "
@@ -508,7 +511,8 @@ static int use(struct flags_struct *flags)
 				(void) fprintf
 				  (_stdout_,
 				   "echo \"Error: unable to prepare "
-				   "containers for product %s.\"\n",
+				   "containers for product %s. Please "
+				   "review the use file.\"\n",
 				   product);
 
 			      goto done_label;
@@ -584,13 +588,13 @@ static int use(struct flags_struct *flags)
       ** Update the sourced file.
       */
 
-      stdvalues[0] = PATH;
+      stdvalues[0] = LD_LIBRARY_PATH;
       stdvalues[1] = MANPATH;
-      stdvalues[2] = LD_LIBRARY_PATH;
+      stdvalues[2] = PATH;
       stdvalues[3] = XFILESEARCHPATH;
-      dousevalues[0] = flags->no_path;
+      dousevalues[0] = flags->no_ld_library_path;
       dousevalues[1] = flags->no_manpath;
-      dousevalues[2] = flags->no_ld_library_path;
+      dousevalues[2] = flags->no_path;
       dousevalues[3] = flags->no_xfilesearchpath;
 
       for(i = 0; i < 4; i++)
@@ -599,7 +603,7 @@ static int use(struct flags_struct *flags)
 	  {
 	    (void) memset(envact, 0, sizeof(envact));
 
-	    if(flags->shell_type == SH)
+	    if(flags->shell_type == BASH)
 	      (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			      stdvariables[i],
 			      stdvalues[i]);
@@ -611,7 +615,7 @@ static int use(struct flags_struct *flags)
 	      (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			      stdvariables[i],
 			      stdvalues[i]);
-	    else if(flags->shell_type == BASH)
+	    else if(flags->shell_type == SH)
 	      (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			      stdvariables[i],
 			      stdvalues[i]);
@@ -631,7 +635,7 @@ static int use(struct flags_struct *flags)
 	  {
 	    (void) memset(envact, 0, sizeof(envact));
 
-	    if(flags->shell_type == SH)
+	    if(flags->shell_type == BASH)
 	      (void) snprintf(envact, sizeof(envact), "unset %s",
 			      stdvariables[i]);
 	    else if(flags->shell_type == CSH)
@@ -640,7 +644,7 @@ static int use(struct flags_struct *flags)
 	    else if(flags->shell_type == KSH)
 	      (void) snprintf(envact, sizeof(envact), "unset %s",
 			      stdvariables[i]);
-	    else if(flags->shell_type == BASH)
+	    else if(flags->shell_type == SH)
 	      (void) snprintf(envact, sizeof(envact), "unset %s",
 			      stdvariables[i]);
 	    else if(flags->shell_type == TCSH)
@@ -734,13 +738,6 @@ static int updatevariable(const char *variable, const char *value,
   if(!_stdout_ || !flags || !value || !variable || strlen(variable) == 0)
     {
     }
-  else if(strcmp(variable, "PATH") == 0)
-    rc = allocenv(&PATH, value, action, flags);
-  else if(strcmp(variable, "MANPATH") == 0)
-    {
-      if(flags->no_manpath == 0)
-	rc = allocenv(&MANPATH, value, action, flags);
-    }
 #if defined(__APPLE__) || defined(__MACH__)
   else if(strcmp(variable, "DYLD_LIBRARY_PATH") == 0)
 #else
@@ -750,6 +747,13 @@ static int updatevariable(const char *variable, const char *value,
       if(flags->no_ld_library_path == 0)
 	rc = allocenv(&LD_LIBRARY_PATH, value, action, flags);
     }
+  else if(strcmp(variable, "MANPATH") == 0)
+    {
+      if(flags->no_manpath == 0)
+	rc = allocenv(&MANPATH, value, action, flags);
+    }
+  else if(strcmp(variable, "PATH") == 0)
+    rc = allocenv(&PATH, value, action, flags);
   else if(strcmp(variable, "XFILESEARCHPATH") == 0)
     {
       if(flags->no_xfilesearchpath == 0)
@@ -769,7 +773,7 @@ static int updatevariable(const char *variable, const char *value,
 	    (void) fprintf(_stdout_, "echo \"Warning: %s "
 			   "is not a valid path.\"\n", value);
 
-	  if(flags->shell_type == SH)
+	  if(flags->shell_type == BASH)
 	    (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			    variable, value);
 	  else if(flags->shell_type == CSH)
@@ -778,7 +782,7 @@ static int updatevariable(const char *variable, const char *value,
 	  else if(flags->shell_type == KSH)
 	    (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			    variable, value);
-	  else if(flags->shell_type == BASH)
+	  else if(flags->shell_type == SH)
 	    (void) snprintf(envact, sizeof(envact), "export %s=%s",
 			    variable, value);
 	  else if(flags->shell_type == TCSH)
@@ -787,13 +791,13 @@ static int updatevariable(const char *variable, const char *value,
 	}
       else
 	{
-	  if(flags->shell_type == SH)
+	  if(flags->shell_type == BASH)
 	    (void) snprintf(envact, sizeof(envact), "unset %s", variable);
 	  else if(flags->shell_type == CSH)
 	    (void) snprintf(envact, sizeof(envact), "unsetenv %s", variable);
 	  else if(flags->shell_type == KSH)
 	    (void) snprintf(envact, sizeof(envact), "unset %s", variable);
-	  else if(flags->shell_type == BASH)
+	  else if(flags->shell_type == SH)
 	    (void) snprintf(envact, sizeof(envact), "unset %s", variable);
 	  else if(flags->shell_type == TCSH)
 	    (void) snprintf(envact, sizeof(envact), "unsetenv %s", variable);

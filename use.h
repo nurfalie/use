@@ -1,10 +1,6 @@
 #ifndef _USE_H_
 #define _USE_H_
 
-/*
-** -- System Includes --
-*/
-
 #include <errno.h>
 #include <limits.h>
 #include <pwd.h>
@@ -16,19 +12,15 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-/*
-** -- Local Includes --
-*/
-
 #include "flags.h"
 #include "use_tmp.h"
 
-char TEMPDIR[PATH_MAX];
-char filename[PATH_MAX];
 FILE *_stdout_;
 FILE *_usefp_;
+char TEMPDIR[PATH_MAX];
+char filename[PATH_MAX];
 
-#define VERSION "1.11.9"
+#define VERSION "1.12.0"
 
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1
@@ -38,10 +30,9 @@ FILE *_usefp_;
 #define EXIT_SUCCESS 0
 #endif
 
-#define MAX_LINE_LENGTH (PATH_MAX + MAX_PRODUCT_NAME_LENGTH + 128)
-
 #define ADD_PATH 0
 #define DELETE_PATH 1
+#define MAX_LINE_LENGTH (PATH_MAX + MAX_PRODUCT_NAME_LENGTH + 128)
 
 enum
   {
@@ -51,8 +42,5 @@ enum
     SH,
     TCSH
   };
-
-int validate(const int argc, char *argv[], struct flags_struct *flags);
-int validatePath(const char *path, const struct flags_struct *flags);
 
 #endif

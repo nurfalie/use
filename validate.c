@@ -1,11 +1,37 @@
 #include "use.h"
 
-static int used_exists(const struct flags_struct *flags,
-		       const char *value);
 static int detached_exists(const struct flags_struct *flags,
-			   const char *value);
+			   const char *value)
+{
+  int i = 0;
 
-int validate(const int argc, char *argv[], struct flags_struct *flags)
+  if(!flags || !value)
+    return -1;
+
+  for(i = 0; i < flags->items_detached; i++)
+    if(strcmp(flags->detached[i], value) == 0)
+      return i;
+
+  return -1;
+}
+
+static int used_exists(const struct flags_struct *flags,
+		       const char *value)
+{
+  int i = 0;
+
+  if(!flags || !value)
+    return -1;
+
+  for(i = 0; i < flags->items_used; i++)
+    if(strcmp(flags->used[i], value) == 0)
+      return i;
+
+  return -1;
+}
+
+int validate(const int argc, char *argv[],
+	     struct flags_struct *flags)
 {
   int i = 0;
   int rc = 0;
@@ -13,7 +39,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
   if(!_stdout_ || !argv || !flags)
     {
       rc = 1;
-      return rc;
+      goto done_label;
     }
 
   for(i = 0; i < argc; i++)
@@ -73,9 +99,7 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
 			   *argv);
 	}
       else if(strcmp(*argv, "-l") == 0)
-	{
-	  flags->list = 1;
-	}
+	flags->list = 1;
       else if(strcmp(*argv, "-n") == 0)
 	{
 	  argv++;
@@ -220,18 +244,18 @@ int validate(const int argc, char *argv[], struct flags_struct *flags)
     rc = 1;
 
   if(rc != 0)
-    {
-      if(_usefp_)
-	{
-	  fclose(_usefp_);
-	  _usefp_ = 0;
-	}
-    }
+    if(_usefp_)
+      {
+	fclose(_usefp_);
+	_usefp_ = 0;
+      }
 
+ done_label:
   return rc;
 }
 
-int validatePath(const char *path, const struct flags_struct *flags)
+int validatePath(const char *path,
+		 const struct flags_struct *flags)
 {
   int rc = 0;
   struct stat sb;
@@ -246,33 +270,4 @@ int validatePath(const char *path, const struct flags_struct *flags)
     }
 
   return rc;
-}
-
-static int used_exists(const struct flags_struct *flags, const char *value)
-{
-  int i = 0;
-
-  if(!flags || !value)
-    return -1;
-
-  for(i = 0; i < flags->items_used; i++)
-    if(strcmp(flags->used[i], value) == 0)
-      return i;
-
-  return -1;
-}
-
-static int detached_exists(const struct flags_struct *flags,
-			   const char *value)
-{
-  int i = 0;
-
-  if(!flags || !value)
-    return -1;
-
-  for(i = 0; i < flags->items_detached; i++)
-    if(strcmp(flags->detached[i], value) == 0)
-      return i;
-
-  return -1;
 }
