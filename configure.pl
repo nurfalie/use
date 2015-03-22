@@ -7,8 +7,8 @@ use POSIX;
 
 # Macros.
 
-$EXIT_SUCCESS = 0;
 $EXIT_FAILURE = 1;
+$EXIT_SUCCESS = 0;
 
 # Determine the location of the use.table file.
 
@@ -37,8 +37,8 @@ $usetabledir = $val . "/use.table";
 
 # Create use_temp.h in the current directory.
 
-$use_tmp = "#ifndef _use_temp_h_\n" .
-    "#define _use_temp_h_\n" .
+$use_tmp = "#ifndef _USE_TEMP_H_\n" .
+    "#define _USE_TEMP_H_\n" .
     "#define USETABLE \"" . $usetabledir . "\"\n" .
     "#endif\n";
 
