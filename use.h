@@ -20,7 +20,7 @@ FILE *_usefp_;
 char TEMPDIR[PATH_MAX];
 char filename[PATH_MAX];
 
-#define VERSION "1.12.0"
+#define VERSION "1.12.1"
 
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1

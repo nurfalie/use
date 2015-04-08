@@ -257,7 +257,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  LD_LIBRARY_PATH = (char *) malloc(size);
+	  LD_LIBRARY_PATH = malloc(size);
 	  (void) memset(LD_LIBRARY_PATH, 0, size);
 	}
 
@@ -304,7 +304,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  MANPATH = (char *) malloc(size);
+	  MANPATH = malloc(size);
 	  (void) memset(MANPATH, 0, size);
 	}
 
@@ -338,7 +338,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  PATH = (char *) malloc(size);
+	  PATH = malloc(size);
 	  (void) memset(PATH, 0, size);
 	}
 
@@ -371,7 +371,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  XFILESEARCHPATH = (char *) malloc(size);
+	  XFILESEARCHPATH = malloc(size);
 	  (void) memset(XFILESEARCHPATH, 0, size);
 	}
 
