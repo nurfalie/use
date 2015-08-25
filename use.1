@@ -10,38 +10,54 @@ shell's environment variables in accordance to defined products.
 It currently modifies DYLD_LIBRARY_PATH, LD_LIBRARY_PATH, MANPATH, PATH, XFILESEARCHPATH, and any other
 variable that is defined in the use.table file.
 .SH OPTIONS
-.IP "-a"
+.TP
+.BI -a
 Display information about use.
-.IP "-d product"
+.TP
+.BI -d " product"
 This option detaches the given product. That is, the environment
 variables of the current shell will not reference the paths defined in the
 use.table file for the given product. Please note that products are detached in a last-in-first-out order.
-.IP "-l"
+.TP
+.BI -l
 List all known products stored in use.table.
-.IP "-n variable"
+.TP
+.BI -n " variable"
 Prevent use from modifying the environment variable variable. Current supported variables
 are DYLD_LIBRARY_PATH, LD_LIBRARY_PATH, MANPATH, PATH, and XFILESEARCHPATH.
-.IP "-p"
+.TP
+.BI -p
 Pretend mode, that is, show potential changes. This option supersedes the -q option.
-.IP "-q"
+.TP
+.BI -q
 Quiet mode. Also, all errors and warnings will be suppressed. This option does not interfere with the -p option.
-.IP "-s type"
+.TP
+.BI -s " type"
 Set the shell type. Valid shells are: BASH, CSH, KSH, SH, and TCSH.
 This option is not necessary as the use alias, if configured properly,
 passes the shell type to the use.bin executable.
-.IP "-t table"
+.TP
+.BI -t " table"
 Use the table table instead of the official use.table table.
-.IP "-u product"
+.TP
+.BI -u " product"
 This option uses the given product. The current shell's environment variables
 are modified to reference the paths defined in use.table for the given product. Please note that products are applied in a last-in-first-out order.
 .SH FILES
-.B /usr/local/bin/use.bash
-.B /usr/local/bin/use.bin
-.B /usr/local/bin/use.csh
-.B /usr/local/bin/use.ksh
-.B /usr/local/bin/use.sh
-.B /usr/local/bin/use.tcsh
-.B /usr/local/share/use.table
+.B
+ /usr/local/bin/use.bash
+.B
+ /usr/local/bin/use.bin
+.B
+ /usr/local/bin/use.csh
+.B
+ /usr/local/bin/use.ksh
+.B
+ /usr/local/bin/use.sh
+.B
+ /usr/local/bin/use.tcsh
+.B
+ /usr/local/share/use.table
 .SH NOTES
 Use will issue a warning for a product that is not located in the use.table file. It will also issue a warning if a product references a nonexistent path.
 You will need to create a use alias for each shell that you intend to use. Please see the
