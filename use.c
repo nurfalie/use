@@ -257,7 +257,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  LD_LIBRARY_PATH = malloc(size);
+	  LD_LIBRARY_PATH = malloc(size * sizeof(char));
 	  (void) memset(LD_LIBRARY_PATH, 0, size);
 	}
 
@@ -304,7 +304,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  MANPATH = malloc(size);
+	  MANPATH = malloc(size * sizeof(char));
 	  (void) memset(MANPATH, 0, size);
 	}
 
@@ -338,7 +338,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  PATH = malloc(size);
+	  PATH = malloc(size * sizeof(char));
 	  (void) memset(PATH, 0, size);
 	}
 
@@ -371,7 +371,7 @@ static int use(struct flags_struct *flags)
 
       if(size > 0)
 	{
-	  XFILESEARCHPATH = malloc(size);
+	  XFILESEARCHPATH = malloc(size * sizeof(char));
 	  (void) memset(XFILESEARCHPATH, 0, size);
 	}
 
@@ -853,7 +853,7 @@ static int allocenv(char **envvar, const char *value, const int action,
       goto done_label;
     }
 
-  if(!(tmp = malloc(size)))
+  if(!(tmp = malloc(size * sizeof(char))))
     {
       rc = 1;
       goto done_label;
@@ -897,7 +897,7 @@ static int allocenv(char **envvar, const char *value, const int action,
   free(*envvar);
   size = strlen(tmp) + 1;
 
-  if(!(*envvar = malloc(size)))
+  if(!(*envvar = malloc(size * sizeof(char))))
     {
       rc = 1;
       goto done_label;
