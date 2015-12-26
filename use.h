@@ -18,7 +18,6 @@
 FILE *_stdout_;
 FILE *_usefp_;
 char TEMPDIR[PATH_MAX];
-char filename[PATH_MAX];
 
 #define VERSION "1.12.2"
 

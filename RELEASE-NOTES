@@ -1,6 +1,8 @@
 1.12.2 (12/25/2015)
 
 1. Do not assume that sizeof(char) is one.
+2. Introduced the Wshadow and Wsign-conversion compiler options.
+3. Removed filename global variable.
 
 1.12.1 (04/07/2015)
 
